@@ -1,5 +1,5 @@
 const DB_NAME = "NouLogDB";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -14,6 +14,12 @@ function openDB(): Promise<IDBDatabase> {
       }
       if (!db.objectStoreNames.contains("ospanResults")) {
         db.createObjectStore("ospanResults", {
+          keyPath: "id",
+          autoIncrement: true,
+        });
+      }
+      if (!db.objectStoreNames.contains("gonogoResults")) {
+        db.createObjectStore("gonogoResults", {
           keyPath: "id",
           autoIncrement: true,
         });

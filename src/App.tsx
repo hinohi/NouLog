@@ -1,6 +1,7 @@
 import { Layout } from "./components/Layout.tsx";
 import { DashboardPage } from "./dashboard/DashboardPage.tsx";
 import { useHashRoute } from "./hooks/useHashRoute.ts";
+import { GoNogoPage } from "./tasks/gonogo/GoNogoPage.tsx";
 import { OSPANPage } from "./tasks/ospan/OSPANPage.tsx";
 import { PVTPage } from "./tasks/pvt/PVTPage.tsx";
 import "./index.css";
@@ -25,6 +26,11 @@ function HomePage() {
             ワーキングメモリ容量を測定します (15セット)
           </p>
         </a>
+        <a href="#/gonogo" className="home-card">
+          <h2>Go/No-Go</h2>
+          <p>抑制制御テスト</p>
+          <p className="home-card-detail">衝動抑制能力を測定します (80試行)</p>
+        </a>
       </div>
       <a href="#/dashboard" className="btn btn-secondary">
         ダッシュボードを見る
@@ -43,6 +49,9 @@ export function App() {
       break;
     case "/ospan":
       page = <OSPANPage />;
+      break;
+    case "/gonogo":
+      page = <GoNogoPage />;
       break;
     case "/dashboard":
       page = <DashboardPage />;

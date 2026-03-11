@@ -43,3 +43,23 @@ export interface OSPANResult {
   mathAccuracy: number;
   totalMathProblems: number;
 }
+
+export interface GoNogoTrial {
+  type: "go" | "nogo";
+  responded: boolean;
+  rt: number | null;
+  isi: number;
+}
+
+export interface GoNogoResult {
+  id?: number;
+  timestamp: number;
+  durationMs: number;
+  trials: GoNogoTrial[];
+  dPrime: number;
+  goHitRate: number;
+  goMeanRT: number;
+  goMedianRT: number;
+  falseAlarmRate: number;
+  omissionRate: number;
+}

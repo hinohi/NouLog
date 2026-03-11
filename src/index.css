@@ -412,6 +412,66 @@ body {
   justify-content: center;
 }
 
+/* Go/No-Go */
+.gonogo-runner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  cursor: pointer;
+  user-select: none;
+}
+
+.gonogo-progress {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.gonogo-fixation {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.gonogo-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.gonogo-circle.go {
+  background: var(--success);
+  box-shadow: 0 0 30px rgba(46, 204, 113, 0.5);
+}
+
+.gonogo-circle.nogo {
+  background: var(--danger);
+  box-shadow: 0 0 30px rgba(231, 76, 60, 0.5);
+}
+
+.gonogo-circle-label {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.gonogo-instruction {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
 /* Charts */
 .chart-container {
   background: var(--bg-surface);

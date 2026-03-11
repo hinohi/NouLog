@@ -1,15 +1,21 @@
-import { getAllOSPANResults, getAllPVTResults } from "./repository.ts";
+import {
+  getAllGoNogoResults,
+  getAllOSPANResults,
+  getAllPVTResults,
+} from "./repository.ts";
 
 export async function exportAllData(): Promise<void> {
-  const [pvtResults, ospanResults] = await Promise.all([
+  const [pvtResults, ospanResults, gonogoResults] = await Promise.all([
     getAllPVTResults(),
     getAllOSPANResults(),
+    getAllGoNogoResults(),
   ]);
 
   const data = {
     exportedAt: new Date().toISOString(),
     pvtResults,
     ospanResults,
+    gonogoResults,
   };
 
   const blob = new Blob([JSON.stringify(data, null, 2)], {
