@@ -97,6 +97,8 @@ test("computeGoNogoMetrics with all correct", () => {
     })),
   ];
   const result = computeGoNogoMetrics(trials, 240000);
+  expect(typeof result.uid).toBe("string");
+  expect(result.uid.length).toBeGreaterThan(0);
   expect(result.goHitRate).toBe(1);
   expect(result.falseAlarmRate).toBe(0);
   expect(result.omissionRate).toBe(0);

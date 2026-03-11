@@ -98,6 +98,8 @@ test("computeOSPANResult calculates scores correctly", () => {
   ];
 
   const result = computeOSPANResult(sets);
+  expect(typeof result.uid).toBe("string");
+  expect(result.uid.length).toBeGreaterThan(0);
   expect(result.absoluteScore).toBe(3);
   expect(result.partialScore).toBe(6);
   expect(result.totalLetters).toBe(7);

@@ -150,6 +150,7 @@ export function computeGoNogoMetrics(
   );
 
   return {
+    uid: crypto.randomUUID(),
     timestamp: Date.now(),
     durationMs,
     trials,

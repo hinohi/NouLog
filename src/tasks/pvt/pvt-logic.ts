@@ -34,6 +34,7 @@ export function computeMetrics(
   }
 
   return {
+    uid: crypto.randomUUID(),
     timestamp: Date.now(),
     durationMs,
     trials,

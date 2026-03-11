@@ -22,6 +22,8 @@ test("computeMetrics with valid trials", () => {
     { rt: 400, falseStart: false, isi: 5000 },
   ];
   const result = computeMetrics(trials, 180000);
+  expect(typeof result.uid).toBe("string");
+  expect(result.uid.length).toBeGreaterThan(0);
   expect(result.meanRT).toBe(300);
   expect(result.medianRT).toBe(300);
   expect(result.lapseCount).toBe(0);

@@ -6,6 +6,7 @@ export interface PVTTrial {
 
 export interface PVTResult {
   id?: number;
+  uid: string;
   timestamp: number;
   durationMs: number;
   trials: PVTTrial[];
@@ -35,6 +36,7 @@ export interface OSPANSet {
 
 export interface OSPANResult {
   id?: number;
+  uid: string;
   timestamp: number;
   sets: OSPANSet[];
   absoluteScore: number;
@@ -53,6 +55,7 @@ export interface GoNogoTrial {
 
 export interface GoNogoResult {
   id?: number;
+  uid: string;
   timestamp: number;
   durationMs: number;
   trials: GoNogoTrial[];
@@ -62,4 +65,39 @@ export interface GoNogoResult {
   goMedianRT: number;
   falseAlarmRate: number;
   omissionRate: number;
+}
+
+export interface CorsiTrial {
+  spanLength: number;
+  sequence: number[];
+  userInput: number[];
+  correct: boolean;
+}
+
+export interface CorsiResult {
+  id?: number;
+  uid: string;
+  timestamp: number;
+  durationMs: number;
+  trials: CorsiTrial[];
+  blockSpan: number;
+  totalScore: number;
+  longestSequence: number;
+  totalTrials: number;
+  correctTrials: number;
+}
+
+export interface ExportData {
+  exportedAt: string;
+  pvtResults: PVTResult[];
+  ospanResults: OSPANResult[];
+  gonogoResults: GoNogoResult[];
+  corsiResults: CorsiResult[];
+}
+
+export interface ImportResult {
+  pvt: { imported: number; skipped: number };
+  ospan: { imported: number; skipped: number };
+  gonogo: { imported: number; skipped: number };
+  corsi: { imported: number; skipped: number };
 }

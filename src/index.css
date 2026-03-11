@@ -472,6 +472,113 @@ body {
   font-size: 0.95rem;
 }
 
+/* Corsi */
+.corsi-status {
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.corsi-instruction {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.corsi-board {
+  position: relative;
+  width: min(400px, 85vw);
+  aspect-ratio: 1;
+  margin: 0 auto 1.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.corsi-block {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  transform: translate(-50%, -50%);
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    box-shadow 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
+}
+
+.corsi-block.lit {
+  background: var(--warning);
+  border-color: var(--warning);
+  box-shadow: 0 0 20px rgba(230, 126, 34, 0.6);
+}
+
+.corsi-block.tappable {
+  cursor: pointer;
+}
+
+.corsi-block.tappable:hover {
+  border-color: var(--primary);
+  background: var(--bg-card);
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+}
+
+.corsi-block.tapped {
+  background: var(--primary);
+  border-color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.corsi-block.correct {
+  background: var(--success);
+  border-color: var(--success);
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+}
+
+.corsi-block.wrong {
+  background: var(--danger);
+  border-color: var(--danger);
+  box-shadow: 0 0 15px rgba(231, 76, 60, 0.5);
+}
+
+.corsi-block-number {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.corsi-recall-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.corsi-input-progress {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.corsi-input-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.15s;
+}
+
+.corsi-input-dot.filled {
+  background: var(--primary);
+}
+
 /* Charts */
 .chart-container {
   background: var(--bg-surface);

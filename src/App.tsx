@@ -1,6 +1,7 @@
 import { Layout } from "./components/Layout.tsx";
 import { DashboardPage } from "./dashboard/DashboardPage.tsx";
 import { useHashRoute } from "./hooks/useHashRoute.ts";
+import { CorsiPage } from "./tasks/corsi/CorsiPage.tsx";
 import { GoNogoPage } from "./tasks/gonogo/GoNogoPage.tsx";
 import { OSPANPage } from "./tasks/ospan/OSPANPage.tsx";
 import { PVTPage } from "./tasks/pvt/PVTPage.tsx";
@@ -31,6 +32,11 @@ function HomePage() {
           <p>抑制制御テスト</p>
           <p className="home-card-detail">衝動抑制能力を測定します (80試行)</p>
         </a>
+        <a href="#/corsi" className="home-card">
+          <h2>Corsi Block</h2>
+          <p>空間ワーキングメモリテスト</p>
+          <p className="home-card-detail">空間ワーキングメモリを測定します</p>
+        </a>
       </div>
       <a href="#/dashboard" className="btn btn-secondary">
         ダッシュボードを見る
@@ -52,6 +58,9 @@ export function App() {
       break;
     case "/gonogo":
       page = <GoNogoPage />;
+      break;
+    case "/corsi":
+      page = <CorsiPage />;
       break;
     case "/dashboard":
       page = <DashboardPage />;

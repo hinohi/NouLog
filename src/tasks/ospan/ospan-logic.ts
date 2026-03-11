@@ -112,6 +112,7 @@ export function computeOSPANResult(sets: OSPANSet[]): OSPANResult {
   }
 
   return {
+    uid: crypto.randomUUID(),
     timestamp: Date.now(),
     sets,
     absoluteScore,
