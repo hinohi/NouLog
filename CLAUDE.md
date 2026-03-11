@@ -1,106 +1,41 @@
+# CLAUDE.md
 
-Default to using Bun instead of Node.js.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-- Use `bun <file>` instead of `node <file>` or `ts-node <file>`
-- Use `bun test` instead of `jest` or `vitest`
-- Use `bun build <file.html|file.ts|file.css>` instead of `webpack` or `esbuild`
-- Use `bun install` instead of `npm install` or `yarn install` or `pnpm install`
-- Use `bun run <script>` instead of `npm run <script>` or `yarn run <script>` or `pnpm run <script>`
-- Use `bunx <package> <command>` instead of `npx <package> <command>`
-- Bun automatically loads .env, so don't use dotenv.
+## Project Overview
 
-## APIs
+NouLog（認知パフォーマンス定点観測）は、認知機能テストをブラウザ上で実行し結果を記録するSPAアプリ。現在2種のテストを実装:
+- **PVT** (精神運動覚醒テスト): 反応時間を3分間測定
+- **OSPAN** (操作スパンテスト): ワーキングメモリ容量を測定（数学問題＋文字記憶）
 
-- `Bun.serve()` supports WebSockets, HTTPS, and routes. Don't use `express`.
-- `bun:sqlite` for SQLite. Don't use `better-sqlite3`.
-- `Bun.redis` for Redis. Don't use `ioredis`.
-- `Bun.sql` for Postgres. Don't use `pg` or `postgres.js`.
-- `WebSocket` is built-in. Don't use `ws`.
-- Prefer `Bun.file` over `node:fs`'s readFile/writeFile
-- Bun.$`ls` instead of execa.
+## Commands
 
-## Testing
-
-Use `bun test` to run tests.
-
-```ts#index.test.ts
-import { test, expect } from "bun:test";
-
-test("hello world", () => {
-  expect(1).toBe(1);
-});
+```bash
+bun dev          # 開発サーバー起動 (HMR有効)
+bun run build    # プロダクションビルド (dist/へ出力)
+bun start        # プロダクション実行
+bun run check    # Biome lint/format チェック
+bun run fix      # Biome lint/format 自動修正
+bun test         # テスト実行
 ```
 
-## Frontend
+## Tech Stack
 
-Use HTML imports with `Bun.serve()`. Don't use `vite`. HTML imports fully support React, CSS, Tailwind.
+- **Runtime/Bundler**: Bun (Node.jsではなくBunを使う)
+- **Frontend**: React 19, TypeScript, Recharts (グラフ)
+- **Linter/Formatter**: Biome (インデント: スペース2, ダブルクォート)
+- **Server**: `Bun.serve()` でHTMLインポート方式 (Vite/express不使用)
+- **DB**: ブラウザ IndexedDB (サーバーサイドDBなし)
 
-Server:
+## Architecture
 
-```ts#index.ts
-import index from "./index.html"
-
-Bun.serve({
-  routes: {
-    "/": index,
-    "/api/users/:id": {
-      GET: (req) => {
-        return new Response(JSON.stringify({ id: req.params.id }));
-      },
-    },
-  },
-  // optional websocket support
-  websocket: {
-    open: (ws) => {
-      ws.send("Hello, world!");
-    },
-    message: (ws, message) => {
-      ws.send(message);
-    },
-    close: (ws) => {
-      // handle close
-    }
-  },
-  development: {
-    hmr: true,
-    console: true,
-  }
-})
-```
-
-HTML files can import .tsx, .jsx or .js files directly and Bun's bundler will transpile & bundle automatically. `<link>` tags can point to stylesheets and Bun's CSS bundler will bundle.
-
-```html#index.html
-<html>
-  <body>
-    <h1>Hello, world!</h1>
-    <script type="module" src="./frontend.tsx"></script>
-  </body>
-</html>
-```
-
-With the following `frontend.tsx`:
-
-```tsx#frontend.tsx
-import React from "react";
-import { createRoot } from "react-dom/client";
-
-// import .css files directly and it works
-import './index.css';
-
-const root = createRoot(document.body);
-
-export default function Frontend() {
-  return <h1>Hello, world!</h1>;
-}
-
-root.render(<Frontend />);
-```
-
-Then, run index.ts
-
-```sh
-bun --hot ./index.ts
-```
-
-For more information, read the Bun API docs in `node_modules/bun-types/docs/**.mdx`.
+- `src/index.ts` — Bunサーバーエントリポイント。`Bun.serve()`でHTMLをルーティング
+- `src/frontend.tsx` — Reactエントリポイント (HMR対応)
+- `src/App.tsx` — ハッシュベースルーティング (`useHashRoute`) でページ切替
+- `src/tasks/{pvt,ospan}/` — 各テストのページ・ロジック・UIコンポーネント
+  - `*-logic.ts` — 純粋なビジネスロジック (テスト可能、UIに依存しない)
+  - `use*.ts` — React hooks (テスト実行状態管理)
+  - `*Page.tsx` / `*Runner.tsx` / `*Result.tsx` — UIコンポーネント
+- `src/dashboard/` — 結果一覧・グラフ表示
+- `src/db/` — IndexedDBラッパー。`schema.ts`で型定義、`repository.ts`でCRUD、`export.ts`でJSONエクスポート
+- `src/components/` — 共通UIコンポーネント
