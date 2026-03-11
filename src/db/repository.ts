@@ -1,5 +1,5 @@
-import { put, getAll } from "./indexeddb.ts";
-import type { PVTResult, OSPANResult } from "./schema.ts";
+import { getAll, put } from "./indexeddb.ts";
+import type { OSPANResult, PVTResult } from "./schema.ts";
 
 export function savePVTResult(result: PVTResult): Promise<PVTResult> {
   return put<PVTResult>("pvtResults", result);

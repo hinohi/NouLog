@@ -1,13 +1,13 @@
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
   CartesianGrid,
-  Tooltip,
   Legend,
+  Line,
+  LineChart,
   ReferenceLine,
   ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
 import type { PVTResult } from "../db/schema.ts";
 
@@ -37,7 +37,10 @@ export function PVTChart({ results }: Props) {
     <div className="chart-container">
       <h3>PVT 反応時間推移</h3>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+        <LineChart
+          data={data}
+          margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+        >
           <CartesianGrid strokeDasharray="3 3" stroke="#444" />
           <XAxis dataKey="date" stroke="#aaa" fontSize={12} />
           <YAxis stroke="#aaa" fontSize={12} unit=" ms" />
@@ -45,9 +48,26 @@ export function PVTChart({ results }: Props) {
             contentStyle={{ backgroundColor: "#333", border: "1px solid #555" }}
           />
           <Legend />
-          <ReferenceLine y={500} stroke="#e74c3c" strokeDasharray="5 5" label="ラプス閾値" />
-          <Line type="monotone" dataKey="meanRT" name="平均RT" stroke="#3498db" dot={{ r: 4 }} />
-          <Line type="monotone" dataKey="medianRT" name="中央値RT" stroke="#2ecc71" dot={{ r: 4 }} />
+          <ReferenceLine
+            y={500}
+            stroke="#e74c3c"
+            strokeDasharray="5 5"
+            label="ラプス閾値"
+          />
+          <Line
+            type="monotone"
+            dataKey="meanRT"
+            name="平均RT"
+            stroke="#3498db"
+            dot={{ r: 4 }}
+          />
+          <Line
+            type="monotone"
+            dataKey="medianRT"
+            name="中央値RT"
+            stroke="#2ecc71"
+            dot={{ r: 4 }}
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>

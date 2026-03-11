@@ -64,7 +64,9 @@ body {
   color: var(--text-muted);
   text-decoration: none;
   font-size: 0.9rem;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .nav-link:hover {
@@ -96,7 +98,9 @@ body {
   cursor: pointer;
   text-decoration: none;
   text-align: center;
-  transition: background 0.15s, transform 0.1s;
+  transition:
+    background 0.15s,
+    transform 0.1s;
 }
 
 .btn:active {
@@ -203,7 +207,9 @@ body {
   padding: 1.5rem;
   text-decoration: none;
   color: var(--text);
-  transition: border-color 0.15s, transform 0.15s;
+  transition:
+    border-color 0.15s,
+    transform 0.15s;
 }
 
 .home-card:hover {

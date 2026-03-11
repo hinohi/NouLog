@@ -22,7 +22,9 @@ export function PVTRunner({ phase, elapsedMs, onRespond }: Props) {
   const remaining = Math.max(0, 180 - elapsed);
 
   return (
-    <div className="pvt-runner" onClick={onRespond}>
+    // biome-ignore lint/a11y/useKeyWithClickEvents: keyboard handled via global window listener
+    // biome-ignore lint/a11y/useSemanticElements: intentional full-screen click area
+    <div className="pvt-runner" role="button" tabIndex={0} onClick={onRespond}>
       <div className="pvt-timer">残り {remaining} 秒</div>
       <div className={`pvt-stimulus ${phase === "stimulus" ? "visible" : ""}`}>
         <div className="pvt-circle" />

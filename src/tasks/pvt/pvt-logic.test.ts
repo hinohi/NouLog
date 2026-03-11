@@ -1,6 +1,11 @@
-import { test, expect } from "bun:test";
-import { computeMetrics, randomISI, PVT_ISI_MIN, PVT_ISI_MAX } from "./pvt-logic.ts";
+import { expect, test } from "bun:test";
 import type { PVTTrial } from "../../db/schema.ts";
+import {
+  computeMetrics,
+  PVT_ISI_MAX,
+  PVT_ISI_MIN,
+  randomISI,
+} from "./pvt-logic.ts";
 
 test("randomISI returns value within range", () => {
   for (let i = 0; i < 100; i++) {

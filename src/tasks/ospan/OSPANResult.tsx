@@ -11,11 +11,30 @@ export function OSPANResult({ result, onRetry }: Props) {
       <h2>OSPAN 結果</h2>
       <table className="result-table">
         <tbody>
-          <tr><td>絶対スコア</td><td>{result.absoluteScore} / {result.totalLetters}</td></tr>
-          <tr><td>部分スコア</td><td>{result.partialScore} / {result.totalLetters}</td></tr>
-          <tr><td>算数正答率</td><td>{Math.round(result.mathAccuracy * 100)}%</td></tr>
-          <tr><td>算数問題数</td><td>{result.totalMathProblems}</td></tr>
-          <tr><td>セット数</td><td>{result.sets.length}</td></tr>
+          <tr>
+            <td>絶対スコア</td>
+            <td>
+              {result.absoluteScore} / {result.totalLetters}
+            </td>
+          </tr>
+          <tr>
+            <td>部分スコア</td>
+            <td>
+              {result.partialScore} / {result.totalLetters}
+            </td>
+          </tr>
+          <tr>
+            <td>算数正答率</td>
+            <td>{Math.round(result.mathAccuracy * 100)}%</td>
+          </tr>
+          <tr>
+            <td>算数問題数</td>
+            <td>{result.totalMathProblems}</td>
+          </tr>
+          <tr>
+            <td>セット数</td>
+            <td>{result.sets.length}</td>
+          </tr>
         </tbody>
       </table>
       <h3>セット別詳細</h3>
@@ -42,8 +61,12 @@ export function OSPANResult({ result, onRetry }: Props) {
         </tbody>
       </table>
       <div className="result-actions">
-        <button onClick={onRetry} className="btn btn-primary">もう一度</button>
-        <a href="#/dashboard" className="btn btn-secondary">ダッシュボード</a>
+        <button type="button" onClick={onRetry} className="btn btn-primary">
+          もう一度
+        </button>
+        <a href="#/dashboard" className="btn btn-secondary">
+          ダッシュボード
+        </a>
       </div>
     </div>
   );

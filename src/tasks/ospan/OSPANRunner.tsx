@@ -1,5 +1,5 @@
-import { LETTER_POOL } from "./ospan-logic.ts";
 import type { MathProblemDef } from "./ospan-logic.ts";
+import { LETTER_POOL } from "./ospan-logic.ts";
 
 interface Props {
   phase: "math" | "showLetter" | "recall";
@@ -38,12 +38,22 @@ export function OSPANRunner({
 
       {phase === "math" && currentMathProblem && (
         <div className="ospan-math">
-          <p className="ospan-math-expression">{currentMathProblem.expression}</p>
+          <p className="ospan-math-expression">
+            {currentMathProblem.expression}
+          </p>
           <div className="ospan-math-buttons">
-            <button className="btn btn-correct" onClick={() => onAnswerMath(true)}>
+            <button
+              type="button"
+              className="btn btn-correct"
+              onClick={() => onAnswerMath(true)}
+            >
               正しい
             </button>
-            <button className="btn btn-wrong" onClick={() => onAnswerMath(false)}>
+            <button
+              type="button"
+              className="btn btn-wrong"
+              onClick={() => onAnswerMath(false)}
+            >
               間違い
             </button>
           </div>
@@ -53,13 +63,17 @@ export function OSPANRunner({
       {phase === "showLetter" && (
         <div className="ospan-letter-display">
           <span className="ospan-letter">{currentLetter}</span>
-          <p className="ospan-letter-hint">この文字を覚えてください ({currentItemIndex + 1}/{currentSetSize})</p>
+          <p className="ospan-letter-hint">
+            この文字を覚えてください ({currentItemIndex + 1}/{currentSetSize})
+          </p>
         </div>
       )}
 
       {phase === "recall" && (
         <div className="ospan-recall">
-          <p className="ospan-recall-title">覚えた文字を順番にタップしてください</p>
+          <p className="ospan-recall-title">
+            覚えた文字を順番にタップしてください
+          </p>
           <div className="ospan-recalled">
             {recalledLetters.length > 0
               ? recalledLetters.join(" → ")
@@ -68,6 +82,7 @@ export function OSPANRunner({
           <div className="ospan-letter-grid">
             {LETTER_POOL.map((letter) => (
               <button
+                type="button"
                 key={letter}
                 className={`btn btn-letter ${recalledLetters.includes(letter) ? "selected" : ""}`}
                 onClick={() => onRecallLetter(letter)}
@@ -79,13 +94,18 @@ export function OSPANRunner({
           </div>
           <div className="ospan-recall-actions">
             <button
+              type="button"
               className="btn btn-secondary"
               onClick={onUndoRecall}
               disabled={recalledLetters.length === 0}
             >
               取消
             </button>
-            <button className="btn btn-primary" onClick={onConfirmRecall}>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={onConfirmRecall}
+            >
               確定
             </button>
           </div>

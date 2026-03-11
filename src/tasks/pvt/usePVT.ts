@@ -1,6 +1,6 @@
-import { useState, useRef, useCallback, useEffect } from "react";
-import type { PVTTrial, PVTResult } from "../../db/schema.ts";
-import { PVT_DURATION_MS, randomISI, computeMetrics } from "./pvt-logic.ts";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { PVTResult, PVTTrial } from "../../db/schema.ts";
+import { computeMetrics, PVT_DURATION_MS, randomISI } from "./pvt-logic.ts";
 
 type PVTPhase = "idle" | "waiting" | "stimulus" | "done";
 
@@ -45,11 +45,17 @@ export function usePVT() {
     const elapsed = performance.now() - startTimeRef.current;
     const result = computeMetrics(trialsRef.current, Math.round(elapsed));
     phaseRef.current = "done";
-    setState((s) => ({ ...s, phase: "done", result, elapsedMs: Math.round(elapsed) }));
+    setState((s) => ({
+      ...s,
+      phase: "done",
+      result,
+      elapsedMs: Math.round(elapsed),
+    }));
   }, [cleanup]);
 
   const scheduleStimulus = useCallback(() => {
-    const remaining = PVT_DURATION_MS - (performance.now() - startTimeRef.current);
+    const remaining =
+      PVT_DURATION_MS - (performance.now() - startTimeRef.current);
     if (remaining <= 0) {
       finish();
       return;
@@ -59,16 +65,19 @@ export function usePVT() {
     phaseRef.current = "waiting";
     setState((s) => ({ ...s, phase: "waiting", currentISI: isi }));
 
-    timerRef.current = setTimeout(() => {
-      const now = performance.now();
-      if (now - startTimeRef.current >= PVT_DURATION_MS) {
-        finish();
-        return;
-      }
-      stimulusTimeRef.current = now;
-      phaseRef.current = "stimulus";
-      setState((s) => ({ ...s, phase: "stimulus" }));
-    }, Math.min(isi, remaining));
+    timerRef.current = setTimeout(
+      () => {
+        const now = performance.now();
+        if (now - startTimeRef.current >= PVT_DURATION_MS) {
+          finish();
+          return;
+        }
+        stimulusTimeRef.current = now;
+        phaseRef.current = "stimulus";
+        setState((s) => ({ ...s, phase: "stimulus" }));
+      },
+      Math.min(isi, remaining),
+    );
   }, [finish]);
 
   const start = useCallback(() => {
@@ -99,12 +108,20 @@ export function usePVT() {
     const phase = phaseRef.current;
     if (phase === "stimulus") {
       const rt = Math.round(performance.now() - stimulusTimeRef.current);
-      const trial: PVTTrial = { rt, falseStart: false, isi: currentISIRef.current };
+      const trial: PVTTrial = {
+        rt,
+        falseStart: false,
+        isi: currentISIRef.current,
+      };
       trialsRef.current.push(trial);
       setState((s) => ({ ...s, trials: [...trialsRef.current] }));
       scheduleStimulus();
     } else if (phase === "waiting") {
-      const trial: PVTTrial = { rt: 0, falseStart: true, isi: currentISIRef.current };
+      const trial: PVTTrial = {
+        rt: 0,
+        falseStart: true,
+        isi: currentISIRef.current,
+      };
       trialsRef.current.push(trial);
       setState((s) => ({ ...s, trials: [...trialsRef.current] }));
     }

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useOSPAN } from "./useOSPAN.ts";
-import { OSPANRunner } from "./OSPANRunner.tsx";
-import { OSPANResult } from "./OSPANResult.tsx";
 import { saveOSPANResult } from "../../db/repository.ts";
+import { OSPANResult } from "./OSPANResult.tsx";
+import { OSPANRunner } from "./OSPANRunner.tsx";
+import { useOSPAN } from "./useOSPAN.ts";
 
 export function OSPANPage() {
   const ospan = useOSPAN();
@@ -14,7 +14,11 @@ export function OSPANPage() {
   }, [ospan.phase, ospan.result]);
 
   useEffect(() => {
-    if (ospan.phase === "math" || ospan.phase === "showLetter" || ospan.phase === "recall") {
+    if (
+      ospan.phase === "math" ||
+      ospan.phase === "showLetter" ||
+      ospan.phase === "recall"
+    ) {
       const handler = (e: BeforeUnloadEvent) => {
         e.preventDefault();
       };
@@ -28,7 +32,9 @@ export function OSPANPage() {
       <div className="task-page">
         <h1>OSPAN - 操作スパンテスト</h1>
         <div className="task-description">
-          <p>OSPAN (Operation Span) はワーキングメモリ容量を測定するテストです。</p>
+          <p>
+            OSPAN (Operation Span) はワーキングメモリ容量を測定するテストです。
+          </p>
           <ul>
             <li>算数問題に答えた後、表示される文字を覚えてください</li>
             <li>セットの最後に、覚えた文字を順番通りに入力してください</li>
@@ -36,7 +42,11 @@ export function OSPANPage() {
             <li>算数の正答率が低すぎるとテストの信頼性が低下します</li>
           </ul>
         </div>
-        <button onClick={ospan.start} className="btn btn-primary btn-large">
+        <button
+          type="button"
+          onClick={ospan.start}
+          className="btn btn-primary btn-large"
+        >
           テスト開始
         </button>
       </div>

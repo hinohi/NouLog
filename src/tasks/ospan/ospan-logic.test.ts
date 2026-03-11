@@ -1,15 +1,15 @@
-import { test, expect } from "bun:test";
+import { expect, test } from "bun:test";
+import type { OSPANMathProblem, OSPANSet } from "../../db/schema.ts";
 import {
-  generateSetOrder,
+  computeOSPANResult,
   generateLetters,
   generateMathProblem,
-  scoreSet,
-  computeOSPANResult,
+  generateSetOrder,
   LETTER_POOL,
   SET_SIZES,
   SETS_PER_SIZE,
+  scoreSet,
 } from "./ospan-logic.ts";
-import type { OSPANSet, OSPANMathProblem } from "../../db/schema.ts";
 
 test("generateSetOrder produces correct number of sets", () => {
   const order = generateSetOrder();
@@ -88,7 +88,12 @@ test("computeOSPANResult calculates scores correctly", () => {
       recalledLetters: ["K", "L", "Q", "P"],
       perfectRecall: false,
       correctLetterCount: 3,
-      mathProblems: [makeMath(true), makeMath(true), makeMath(true), makeMath(true)],
+      mathProblems: [
+        makeMath(true),
+        makeMath(true),
+        makeMath(true),
+        makeMath(true),
+      ],
     },
   ];
 

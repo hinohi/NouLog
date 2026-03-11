@@ -1,14 +1,17 @@
-import { useState, useRef, useCallback, useEffect } from "react";
-import type { OSPANSet, OSPANMathProblem } from "../../db/schema.ts";
-import type { OSPANResult } from "../../db/schema.ts";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type {
+  OSPANMathProblem,
+  OSPANResult,
+  OSPANSet,
+} from "../../db/schema.ts";
 import {
-  generateSetOrder,
+  computeOSPANResult,
   generateLetters,
   generateMathProblem,
-  scoreSet,
-  computeOSPANResult,
+  generateSetOrder,
   LETTER_DISPLAY_MS,
   type MathProblemDef,
+  scoreSet,
 } from "./ospan-logic.ts";
 
 type Phase = "idle" | "math" | "showLetter" | "recall" | "done";
@@ -65,41 +68,47 @@ export function useOSPAN() {
     }));
   }, []);
 
-  const showLetter = useCallback((setIndex: number, itemIndex: number) => {
-    const letter = lettersRef.current[itemIndex]!;
-    setState((s) => ({
-      ...s,
-      phase: "showLetter",
-      currentLetter: letter,
-    }));
+  const showLetter = useCallback(
+    (setIndex: number, itemIndex: number) => {
+      const letter = lettersRef.current[itemIndex]!;
+      setState((s) => ({
+        ...s,
+        phase: "showLetter",
+        currentLetter: letter,
+      }));
 
-    letterTimerRef.current = setTimeout(() => {
+      letterTimerRef.current = setTimeout(() => {
+        const setSize = setOrderRef.current[setIndex]!;
+        const nextItem = itemIndex + 1;
+        if (nextItem < setSize) {
+          startMath(setIndex, nextItem);
+        } else {
+          setState((s) => ({
+            ...s,
+            phase: "recall",
+            recalledLetters: [],
+          }));
+        }
+      }, LETTER_DISPLAY_MS);
+    },
+    [startMath],
+  );
+
+  const beginSet = useCallback(
+    (setIndex: number) => {
       const setSize = setOrderRef.current[setIndex]!;
-      const nextItem = itemIndex + 1;
-      if (nextItem < setSize) {
-        startMath(setIndex, nextItem);
-      } else {
-        setState((s) => ({
-          ...s,
-          phase: "recall",
-          recalledLetters: [],
-        }));
-      }
-    }, LETTER_DISPLAY_MS);
-  }, [startMath]);
-
-  const beginSet = useCallback((setIndex: number) => {
-    const setSize = setOrderRef.current[setIndex]!;
-    lettersRef.current = generateLetters(setSize);
-    mathProblemsRef.current = [];
-    setState((s) => ({
-      ...s,
-      currentSetSize: setSize,
-      currentSetIndex: setIndex,
-      currentItemIndex: 0,
-    }));
-    startMath(setIndex, 0);
-  }, [startMath]);
+      lettersRef.current = generateLetters(setSize);
+      mathProblemsRef.current = [];
+      setState((s) => ({
+        ...s,
+        currentSetSize: setSize,
+        currentSetIndex: setIndex,
+        currentItemIndex: 0,
+      }));
+      startMath(setIndex, 0);
+    },
+    [startMath],
+  );
 
   const start = useCallback(() => {
     cleanup();
@@ -120,27 +129,39 @@ export function useOSPAN() {
     beginSet(0);
   }, [cleanup, beginSet]);
 
-  const answerMath = useCallback((answer: boolean) => {
-    if (state.phase !== "math" || !state.currentMathProblem) return;
-    const responseTime = Math.round(performance.now() - mathStartRef.current);
-    const mp: OSPANMathProblem = {
-      expression: state.currentMathProblem.expression,
-      correctAnswer: state.currentMathProblem.correctAnswer,
-      userAnswer: answer,
-      correct: answer === state.currentMathProblem.correctAnswer,
-      responseTimeMs: responseTime,
-    };
-    mathProblemsRef.current.push(mp);
-    showLetter(state.currentSetIndex, state.currentItemIndex);
-  }, [state.phase, state.currentMathProblem, state.currentSetIndex, state.currentItemIndex, showLetter]);
+  const answerMath = useCallback(
+    (answer: boolean) => {
+      if (state.phase !== "math" || !state.currentMathProblem) return;
+      const responseTime = Math.round(performance.now() - mathStartRef.current);
+      const mp: OSPANMathProblem = {
+        expression: state.currentMathProblem.expression,
+        correctAnswer: state.currentMathProblem.correctAnswer,
+        userAnswer: answer,
+        correct: answer === state.currentMathProblem.correctAnswer,
+        responseTimeMs: responseTime,
+      };
+      mathProblemsRef.current.push(mp);
+      showLetter(state.currentSetIndex, state.currentItemIndex);
+    },
+    [
+      state.phase,
+      state.currentMathProblem,
+      state.currentSetIndex,
+      state.currentItemIndex,
+      showLetter,
+    ],
+  );
 
-  const recallLetter = useCallback((letter: string) => {
-    if (state.phase !== "recall") return;
-    setState((s) => ({
-      ...s,
-      recalledLetters: [...s.recalledLetters, letter],
-    }));
-  }, [state.phase]);
+  const recallLetter = useCallback(
+    (letter: string) => {
+      if (state.phase !== "recall") return;
+      setState((s) => ({
+        ...s,
+        recalledLetters: [...s.recalledLetters, letter],
+      }));
+    },
+    [state.phase],
+  );
 
   const undoRecall = useCallback(() => {
     if (state.phase !== "recall") return;
@@ -153,7 +174,10 @@ export function useOSPAN() {
   const confirmRecall = useCallback(() => {
     if (state.phase !== "recall") return;
 
-    const { perfectRecall, correctLetterCount } = scoreSet(lettersRef.current, state.recalledLetters);
+    const { perfectRecall, correctLetterCount } = scoreSet(
+      lettersRef.current,
+      state.recalledLetters,
+    );
     const set: OSPANSet = {
       setSize: state.currentSetSize,
       letters: [...lettersRef.current],
@@ -181,7 +205,15 @@ export function useOSPAN() {
       }));
       beginSet(nextSetIndex);
     }
-  }, [state.phase, state.recalledLetters, state.currentSetSize, state.completedSets, state.currentSetIndex, state.totalSets, beginSet]);
+  }, [
+    state.phase,
+    state.recalledLetters,
+    state.currentSetSize,
+    state.completedSets,
+    state.currentSetIndex,
+    state.totalSets,
+    beginSet,
+  ]);
 
   useEffect(() => {
     return cleanup;

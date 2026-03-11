@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { PVTChart } from "./PVTChart.tsx";
-import { OSPANChart } from "./OSPANChart.tsx";
-import { getAllPVTResults, getAllOSPANResults } from "../db/repository.ts";
+import { useEffect, useState } from "react";
 import { exportAllData } from "../db/export.ts";
-import type { PVTResult, OSPANResult } from "../db/schema.ts";
+import { getAllOSPANResults, getAllPVTResults } from "../db/repository.ts";
+import type { OSPANResult, PVTResult } from "../db/schema.ts";
+import { OSPANChart } from "./OSPANChart.tsx";
+import { PVTChart } from "./PVTChart.tsx";
 
 export function DashboardPage() {
   const [pvtResults, setPvtResults] = useState<PVTResult[]>([]);
@@ -20,7 +20,11 @@ export function DashboardPage() {
   }, []);
 
   if (loading) {
-    return <div className="task-page"><p>読み込み中...</p></div>;
+    return (
+      <div className="task-page">
+        <p>読み込み中...</p>
+      </div>
+    );
   }
 
   return (
@@ -29,7 +33,11 @@ export function DashboardPage() {
       <PVTChart results={pvtResults} />
       <OSPANChart results={ospanResults} />
       <div className="export-section">
-        <button className="btn btn-primary" onClick={exportAllData}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={exportAllData}
+        >
           JSON エクスポート
         </button>
         <p className="export-note">

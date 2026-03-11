@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function useHashRoute(): string {
-  const [route, setRoute] = useState(() => window.location.hash.slice(1) || "/");
+  const [route, setRoute] = useState(
+    () => window.location.hash.slice(1) || "/",
+  );
 
   useEffect(() => {
     const handler = () => {

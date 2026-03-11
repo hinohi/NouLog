@@ -1,4 +1,4 @@
-import { getAllPVTResults, getAllOSPANResults } from "./repository.ts";
+import { getAllOSPANResults, getAllPVTResults } from "./repository.ts";
 
 export async function exportAllData(): Promise<void> {
   const [pvtResults, ospanResults] = await Promise.all([
@@ -12,7 +12,9 @@ export async function exportAllData(): Promise<void> {
     ospanResults,
   };
 
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json",
+  });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;

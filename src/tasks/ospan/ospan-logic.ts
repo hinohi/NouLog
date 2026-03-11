@@ -1,6 +1,19 @@
-import type { OSPANMathProblem, OSPANSet, OSPANResult } from "../../db/schema.ts";
+import type { OSPANResult, OSPANSet } from "../../db/schema.ts";
 
-export const LETTER_POOL = ["F", "H", "J", "K", "L", "N", "P", "Q", "R", "S", "T", "Y"] as const;
+export const LETTER_POOL = [
+  "F",
+  "H",
+  "J",
+  "K",
+  "L",
+  "N",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "Y",
+] as const;
 export const SET_SIZES = [3, 4, 5, 6, 7] as const;
 export const SETS_PER_SIZE = 3;
 export const LETTER_DISPLAY_MS = 1000;
@@ -51,7 +64,10 @@ export function generateMathProblem(): MathProblemDef {
   }
 
   const isCorrect = Math.random() < 0.5;
-  const proposed = isCorrect ? result : result + (Math.random() < 0.5 ? 1 : -1) * (Math.floor(Math.random() * 3) + 1);
+  const proposed = isCorrect
+    ? result
+    : result +
+      (Math.random() < 0.5 ? 1 : -1) * (Math.floor(Math.random() * 3) + 1);
 
   return {
     expression: `(${a} ${op} ${b}) = ${proposed}?`,
@@ -60,7 +76,10 @@ export function generateMathProblem(): MathProblemDef {
   };
 }
 
-export function scoreSet(letters: string[], recalledLetters: string[]): { perfectRecall: boolean; correctLetterCount: number } {
+export function scoreSet(
+  letters: string[],
+  recalledLetters: string[],
+): { perfectRecall: boolean; correctLetterCount: number } {
   let correctCount = 0;
   for (let i = 0; i < letters.length; i++) {
     if (i < recalledLetters.length && recalledLetters[i] === letters[i]) {
@@ -98,7 +117,8 @@ export function computeOSPANResult(sets: OSPANSet[]): OSPANResult {
     absoluteScore,
     partialScore,
     totalLetters,
-    mathAccuracy: totalMathProblems > 0 ? totalMathCorrect / totalMathProblems : 0,
+    mathAccuracy:
+      totalMathProblems > 0 ? totalMathCorrect / totalMathProblems : 0,
     totalMathProblems,
   };
 }

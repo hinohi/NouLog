@@ -1,8 +1,8 @@
-import { useHashRoute } from "./hooks/useHashRoute.ts";
 import { Layout } from "./components/Layout.tsx";
-import { PVTPage } from "./tasks/pvt/PVTPage.tsx";
-import { OSPANPage } from "./tasks/ospan/OSPANPage.tsx";
 import { DashboardPage } from "./dashboard/DashboardPage.tsx";
+import { useHashRoute } from "./hooks/useHashRoute.ts";
+import { OSPANPage } from "./tasks/ospan/OSPANPage.tsx";
+import { PVTPage } from "./tasks/pvt/PVTPage.tsx";
 import "./index.css";
 
 function HomePage() {
@@ -14,15 +14,21 @@ function HomePage() {
         <a href="#/pvt" className="home-card">
           <h2>PVT</h2>
           <p>精神運動覚醒テスト</p>
-          <p className="home-card-detail">反応時間と注意力を測定します (3分間)</p>
+          <p className="home-card-detail">
+            反応時間と注意力を測定します (3分間)
+          </p>
         </a>
         <a href="#/ospan" className="home-card">
           <h2>OSPAN</h2>
           <p>操作スパンテスト</p>
-          <p className="home-card-detail">ワーキングメモリ容量を測定します (15セット)</p>
+          <p className="home-card-detail">
+            ワーキングメモリ容量を測定します (15セット)
+          </p>
         </a>
       </div>
-      <a href="#/dashboard" className="btn btn-secondary">ダッシュボードを見る</a>
+      <a href="#/dashboard" className="btn btn-secondary">
+        ダッシュボードを見る
+      </a>
     </div>
   );
 }

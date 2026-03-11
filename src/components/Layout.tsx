@@ -7,11 +7,19 @@ const NAV_ITEMS = [
   { path: "/dashboard", label: "Dashboard" },
 ] as const;
 
-export function Layout({ children, currentRoute }: { children: ReactNode; currentRoute: string }) {
+export function Layout({
+  children,
+  currentRoute,
+}: {
+  children: ReactNode;
+  currentRoute: string;
+}) {
   return (
     <div className="layout">
       <nav className="nav">
-        <a href="#/" className="nav-brand">NouLog</a>
+        <a href="#/" className="nav-brand">
+          NouLog
+        </a>
         <div className="nav-links">
           {NAV_ITEMS.map((item) => (
             <a

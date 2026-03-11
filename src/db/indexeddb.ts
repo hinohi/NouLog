@@ -7,10 +7,16 @@ function openDB(): Promise<IDBDatabase> {
     request.onupgradeneeded = () => {
       const db = request.result;
       if (!db.objectStoreNames.contains("pvtResults")) {
-        db.createObjectStore("pvtResults", { keyPath: "id", autoIncrement: true });
+        db.createObjectStore("pvtResults", {
+          keyPath: "id",
+          autoIncrement: true,
+        });
       }
       if (!db.objectStoreNames.contains("ospanResults")) {
-        db.createObjectStore("ospanResults", { keyPath: "id", autoIncrement: true });
+        db.createObjectStore("ospanResults", {
+          keyPath: "id",
+          autoIncrement: true,
+        });
       }
     };
     request.onsuccess = () => resolve(request.result);
