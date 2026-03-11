@@ -228,6 +228,29 @@ body {
   margin-top: 0.5rem;
 }
 
+.home-footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.home-disclaimer {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.home-github-link {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.home-github-link:hover {
+  color: var(--text);
+}
+
 /* Result table */
 .result-table {
   margin: 1rem auto;

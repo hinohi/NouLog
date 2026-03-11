@@ -1,21 +1,30 @@
-# bun-react-template
+# NouLog
 
-To install dependencies:
+認知パフォーマンス定点観測ツール。ブラウザ上で認知機能テストを実行し、結果を記録・可視化するWebアプリです。
+
+https://hinohi.github.io/NouLog/
+
+## テスト一覧
+
+| テスト | 内容 |
+|--------|------|
+| **PVT** (精神運動覚醒テスト) | 反応時間と注意力を測定します (3分間) |
+| **OSPAN** (操作スパンテスト) | 数学問題と文字記憶によりワーキングメモリ容量を測定します (15セット) |
+| **Go/No-Go** (抑制制御テスト) | 衝動抑制能力を測定します (80試行) |
+| **Corsi Block** (空間ワーキングメモリテスト) | 空間ワーキングメモリを測定します |
+
+## データについて
+
+テスト結果はすべてブラウザの IndexedDB にローカル保存されます。サーバーへのデータ送信は一切行いません。
+
+ブラウザのデータを消去すると結果も失われるため、ダッシュボードの **JSON エクスポート / インポート** 機能を使って定期的にバックアップすることをおすすめします。
+
+## 開発
 
 ```bash
-bun install
+bun install     # 依存パッケージのインストール
+bun dev         # 開発サーバー起動
+bun run build   # プロダクションビルド
+bun run check   # lint/format チェック
+bun test        # テスト実行
 ```
-
-To start a development server:
-
-```bash
-bun dev
-```
-
-To run for production:
-
-```bash
-bun start
-```
-
-This project was created using `bun init` in bun v1.3.9. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.

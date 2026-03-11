@@ -41,6 +41,22 @@ function HomePage() {
       <a href="#/dashboard" className="btn btn-secondary">
         ダッシュボードを見る
       </a>
+      <div className="home-footer">
+        <p className="home-disclaimer">
+          本アプリは非専門家が作成したものであり、医学的・心理学的な効果を保証するものではありません。
+        </p>
+        <p className="home-disclaimer">
+          データはブラウザにローカル保存されます。サーバーへの送信は行いません。端末やブラウザを変更するとデータは引き継がれないため、ダッシュボードのエクスポート/インポート機能をご利用ください。
+        </p>
+        <a
+          href="https://github.com/hinohi/NouLog"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="home-github-link"
+        >
+          GitHub
+        </a>
+      </div>
     </div>
   );
 }
