@@ -300,6 +300,9 @@ body {
   min-height: 70vh;
   cursor: pointer;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
 }
 
 .pvt-timer {
@@ -444,6 +447,9 @@ body {
   min-height: 70vh;
   cursor: pointer;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
 }
 
 .gonogo-progress {
