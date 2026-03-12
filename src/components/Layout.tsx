@@ -6,6 +6,7 @@ const NAV_ITEMS = [
   { path: "/ospan", label: "OSPAN" },
   { path: "/gonogo", label: "Go/No-Go" },
   { path: "/corsi", label: "Corsi" },
+  { path: "/taskswitch", label: "TaskSwitch" },
   { path: "/dashboard", label: "Dashboard" },
 ] as const;
 

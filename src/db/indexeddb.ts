@@ -1,11 +1,12 @@
 const DB_NAME = "NouLogDB";
-const DB_VERSION = 4;
+const DB_VERSION = 5;
 
 const STORE_NAMES = [
   "pvtResults",
   "ospanResults",
   "gonogoResults",
   "corsiResults",
+  "taskswitchResults",
 ];
 
 function openDB(): Promise<IDBDatabase> {

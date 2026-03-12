@@ -88,12 +88,39 @@ export interface CorsiResult {
   correctTrials: number;
 }
 
+export interface TaskSwitchTrial {
+  task: "parity" | "magnitude";
+  condition: "switch" | "repeat" | "first";
+  digit: number;
+  response: "left" | "right" | null;
+  correct: boolean;
+  rt: number | null;
+  timedOut: boolean;
+}
+
+export interface TaskSwitchResult {
+  id?: number;
+  uid: string;
+  timestamp: number;
+  durationMs: number;
+  trials: TaskSwitchTrial[];
+  switchCost: number;
+  switchMeanRT: number;
+  repeatMeanRT: number;
+  overallMeanRT: number;
+  overallAccuracy: number;
+  switchAccuracy: number;
+  repeatAccuracy: number;
+  timeoutCount: number;
+}
+
 export interface ExportData {
   exportedAt: string;
   pvtResults: PVTResult[];
   ospanResults: OSPANResult[];
   gonogoResults: GoNogoResult[];
   corsiResults: CorsiResult[];
+  taskswitchResults?: TaskSwitchResult[];
 }
 
 export interface ImportResult {
@@ -101,4 +128,5 @@ export interface ImportResult {
   ospan: { imported: number; skipped: number };
   gonogo: { imported: number; skipped: number };
   corsi: { imported: number; skipped: number };
+  taskswitch: { imported: number; skipped: number };
 }

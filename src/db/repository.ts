@@ -5,6 +5,7 @@ import type {
   GoNogoResult,
   OSPANResult,
   PVTResult,
+  TaskSwitchResult,
 } from "./schema.ts";
 
 export function savePVTResult(result: PVTResult): Promise<PVTResult> {
@@ -45,4 +46,15 @@ export function saveCorsiResult(result: CorsiResult): Promise<CorsiResult> {
 
 export function getAllCorsiResults(): Promise<CorsiResult[]> {
   return getAll<CorsiResult>("corsiResults");
+}
+
+export function saveTaskSwitchResult(
+  result: TaskSwitchResult,
+): Promise<TaskSwitchResult> {
+  result.uid ||= crypto.randomUUID();
+  return put<TaskSwitchResult>("taskswitchResults", result);
+}
+
+export function getAllTaskSwitchResults(): Promise<TaskSwitchResult[]> {
+  return getAll<TaskSwitchResult>("taskswitchResults");
 }

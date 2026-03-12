@@ -4,6 +4,7 @@ import {
   getAllGoNogoResults,
   getAllOSPANResults,
   getAllPVTResults,
+  getAllTaskSwitchResults,
 } from "./repository.ts";
 import type {
   CorsiResult,
@@ -11,16 +12,23 @@ import type {
   ImportResult,
   OSPANResult,
   PVTResult,
+  TaskSwitchResult,
 } from "./schema.ts";
 
 export async function exportAllData(): Promise<void> {
-  const [pvtResults, ospanResults, gonogoResults, corsiResults] =
-    await Promise.all([
-      getAllPVTResults(),
-      getAllOSPANResults(),
-      getAllGoNogoResults(),
-      getAllCorsiResults(),
-    ]);
+  const [
+    pvtResults,
+    ospanResults,
+    gonogoResults,
+    corsiResults,
+    taskswitchResults,
+  ] = await Promise.all([
+    getAllPVTResults(),
+    getAllOSPANResults(),
+    getAllGoNogoResults(),
+    getAllCorsiResults(),
+    getAllTaskSwitchResults(),
+  ]);
 
   const data = {
     exportedAt: new Date().toISOString(),
@@ -28,6 +36,7 @@ export async function exportAllData(): Promise<void> {
     ospanResults,
     gonogoResults,
     corsiResults,
+    taskswitchResults,
   };
 
   const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -64,13 +73,17 @@ export async function importAllData(file: File): Promise<ImportResult> {
     ? obj.gonogoResults
     : [];
   const corsiRecords = Array.isArray(obj.corsiResults) ? obj.corsiResults : [];
+  const taskswitchRecords = Array.isArray(obj.taskswitchResults)
+    ? obj.taskswitchResults
+    : [];
 
-  const [pvt, ospan, gonogo, corsi] = await Promise.all([
+  const [pvt, ospan, gonogo, corsi, taskswitch] = await Promise.all([
     importToStore<PVTResult>("pvtResults", pvtRecords),
     importToStore<OSPANResult>("ospanResults", ospanRecords),
     importToStore<GoNogoResult>("gonogoResults", gonogoRecords),
     importToStore<CorsiResult>("corsiResults", corsiRecords),
+    importToStore<TaskSwitchResult>("taskswitchResults", taskswitchRecords),
   ]);
 
-  return { pvt, ospan, gonogo, corsi };
+  return { pvt, ospan, gonogo, corsi, taskswitch };
 }

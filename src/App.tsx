@@ -5,6 +5,7 @@ import { CorsiPage } from "./tasks/corsi/CorsiPage.tsx";
 import { GoNogoPage } from "./tasks/gonogo/GoNogoPage.tsx";
 import { OSPANPage } from "./tasks/ospan/OSPANPage.tsx";
 import { PVTPage } from "./tasks/pvt/PVTPage.tsx";
+import { TaskSwitchPage } from "./tasks/taskswitch/TaskSwitchPage.tsx";
 import "./index.css";
 
 function HomePage() {
@@ -36,6 +37,13 @@ function HomePage() {
           <h2>Corsi Block</h2>
           <p>空間ワーキングメモリテスト</p>
           <p className="home-card-detail">空間ワーキングメモリを測定します</p>
+        </a>
+        <a href="#/taskswitch" className="home-card">
+          <h2>Task Switching</h2>
+          <p>認知的柔軟性テスト</p>
+          <p className="home-card-detail">
+            セットシフティング能力を測定します (64試行)
+          </p>
         </a>
       </div>
       <a href="#/dashboard" className="btn btn-secondary">
@@ -77,6 +85,9 @@ export function App() {
       break;
     case "/corsi":
       page = <CorsiPage />;
+      break;
+    case "/taskswitch":
+      page = <TaskSwitchPage />;
       break;
     case "/dashboard":
       page = <DashboardPage />;

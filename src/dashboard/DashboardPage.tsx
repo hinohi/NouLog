@@ -5,6 +5,7 @@ import {
   getAllGoNogoResults,
   getAllOSPANResults,
   getAllPVTResults,
+  getAllTaskSwitchResults,
 } from "../db/repository.ts";
 import type {
   CorsiResult,
@@ -12,17 +13,22 @@ import type {
   ImportResult,
   OSPANResult,
   PVTResult,
+  TaskSwitchResult,
 } from "../db/schema.ts";
 import { CorsiChart } from "./CorsiChart.tsx";
 import { GoNogoChart } from "./GoNogoChart.tsx";
 import { OSPANChart } from "./OSPANChart.tsx";
 import { PVTChart } from "./PVTChart.tsx";
+import { TaskSwitchChart } from "./TaskSwitchChart.tsx";
 
 export function DashboardPage() {
   const [pvtResults, setPvtResults] = useState<PVTResult[]>([]);
   const [ospanResults, setOspanResults] = useState<OSPANResult[]>([]);
   const [gonogoResults, setGonogoResults] = useState<GoNogoResult[]>([]);
   const [corsiResults, setCorsiResults] = useState<CorsiResult[]>([]);
+  const [taskswitchResults, setTaskswitchResults] = useState<
+    TaskSwitchResult[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -34,12 +40,14 @@ export function DashboardPage() {
       getAllOSPANResults(),
       getAllGoNogoResults(),
       getAllCorsiResults(),
+      getAllTaskSwitchResults(),
     ])
-      .then(([pvt, ospan, gonogo, corsi]) => {
+      .then(([pvt, ospan, gonogo, corsi, taskswitch]) => {
         setPvtResults(pvt);
         setOspanResults(ospan);
         setGonogoResults(gonogo);
         setCorsiResults(corsi);
+        setTaskswitchResults(taskswitch);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -59,12 +67,14 @@ export function DashboardPage() {
         result.pvt.imported +
         result.ospan.imported +
         result.gonogo.imported +
-        result.corsi.imported;
+        result.corsi.imported +
+        result.taskswitch.imported;
       const totalSkipped =
         result.pvt.skipped +
         result.ospan.skipped +
         result.gonogo.skipped +
-        result.corsi.skipped;
+        result.corsi.skipped +
+        result.taskswitch.skipped;
       setImportStatus(
         `インポート完了: ${totalImported} 件追加, ${totalSkipped} 件スキップ`,
       );
@@ -95,6 +105,7 @@ export function DashboardPage() {
       <OSPANChart results={ospanResults} />
       <GoNogoChart results={gonogoResults} />
       <CorsiChart results={corsiResults} />
+      <TaskSwitchChart results={taskswitchResults} />
       <div className="export-section">
         <button
           type="button"
@@ -121,6 +132,7 @@ export function DashboardPage() {
         <p className="export-note">
           PVT: {pvtResults.length} 件 / OSPAN: {ospanResults.length} 件 /
           Go/No-Go: {gonogoResults.length} 件 / Corsi: {corsiResults.length} 件
+          / Task Switching: {taskswitchResults.length} 件
         </p>
       </div>
     </div>

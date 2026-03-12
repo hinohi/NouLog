@@ -602,6 +602,128 @@ body {
   background: var(--primary);
 }
 
+/* Task Switching */
+.taskswitch-runner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  user-select: none;
+}
+
+.taskswitch-progress {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.taskswitch-pattern {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.taskswitch-pattern-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.taskswitch-pattern-dot.parity {
+  background: var(--bg-card);
+}
+
+.taskswitch-pattern-dot.magnitude {
+  background: var(--bg-card);
+}
+
+.taskswitch-pattern-dot.active.parity {
+  background: #9b59b6;
+  border-color: #9b59b6;
+  box-shadow: 0 0 8px rgba(155, 89, 182, 0.5);
+}
+
+.taskswitch-pattern-dot.active.magnitude {
+  background: var(--warning);
+  border-color: var(--warning);
+  box-shadow: 0 0 8px rgba(230, 126, 34, 0.5);
+}
+
+.taskswitch-task-label {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+
+.taskswitch-stimulus {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.taskswitch-fixation {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.taskswitch-digit {
+  font-size: 5rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.taskswitch-feedback {
+  font-size: 4rem;
+  font-weight: 700;
+}
+
+.taskswitch-feedback.correct {
+  color: var(--success);
+}
+
+.taskswitch-feedback.wrong {
+  color: var(--danger);
+}
+
+.taskswitch-buttons {
+  display: flex;
+  gap: 2rem;
+}
+
+.taskswitch-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: var(--bg-card);
+  color: var(--text);
+  border: 2px solid var(--border);
+  min-width: 120px;
+}
+
+.taskswitch-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: var(--bg-surface);
+}
+
+.taskswitch-key-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
 /* Charts */
 .chart-container {
   background: var(--bg-surface);
