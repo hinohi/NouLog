@@ -5,6 +5,15 @@ export const PVT_ISI_MIN = 2_000;
 export const PVT_ISI_MAX = 10_000;
 export const PVT_LAPSE_THRESHOLD = 500;
 
+export function computeSDRT(trials: PVTTrial[]): number {
+  const rts = trials.filter((t) => !t.falseStart).map((t) => t.rt);
+  if (rts.length === 0) return 0;
+  const mean = rts.reduce((a, b) => a + b, 0) / rts.length;
+  return Math.round(
+    Math.sqrt(rts.reduce((sum, rt) => sum + (rt - mean) ** 2, 0) / rts.length),
+  );
+}
+
 export function randomISI(): number {
   return (
     Math.floor(Math.random() * (PVT_ISI_MAX - PVT_ISI_MIN + 1)) + PVT_ISI_MIN
@@ -40,6 +49,7 @@ export function computeMetrics(
     trials,
     meanRT,
     medianRT,
+    sdRT: computeSDRT(trials),
     lapseCount: rts.filter((rt) => rt > PVT_LAPSE_THRESHOLD).length,
     falseStartCount: trials.filter((t) => t.falseStart).length,
     validTrialCount: validTrials.length,

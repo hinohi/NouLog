@@ -12,6 +12,7 @@ export interface PVTResult {
   trials: PVTTrial[];
   meanRT: number;
   medianRT: number;
+  sdRT: number;
   lapseCount: number;
   falseStartCount: number;
   validTrialCount: number;

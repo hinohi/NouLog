@@ -1,3 +1,4 @@
+import { computeSDRT } from "../tasks/pvt/pvt-logic.ts";
 import { getAll, put } from "./indexeddb.ts";
 import type {
   CorsiResult,
@@ -11,8 +12,12 @@ export function savePVTResult(result: PVTResult): Promise<PVTResult> {
   return put<PVTResult>("pvtResults", result);
 }
 
-export function getAllPVTResults(): Promise<PVTResult[]> {
-  return getAll<PVTResult>("pvtResults");
+export async function getAllPVTResults(): Promise<PVTResult[]> {
+  const results = await getAll<PVTResult>("pvtResults");
+  return results.map((r) => ({
+    ...r,
+    sdRT: r.sdRT ?? computeSDRT(r.trials),
+  }));
 }
 
 export function saveOSPANResult(result: OSPANResult): Promise<OSPANResult> {

@@ -20,6 +20,10 @@ export function PVTResult({ result, onRetry }: Props) {
             <td>{result.medianRT} ms</td>
           </tr>
           <tr>
+            <td>RT変動性 (SD)</td>
+            <td>{result.sdRT} ms</td>
+          </tr>
+          <tr>
             <td>有効試行数</td>
             <td>{result.validTrialCount}</td>
           </tr>

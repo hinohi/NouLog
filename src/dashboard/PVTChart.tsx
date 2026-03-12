@@ -31,6 +31,7 @@ export function PVTChart({ results }: Props) {
       }),
       meanRT: r.meanRT,
       medianRT: r.medianRT,
+      sdRT: r.sdRT,
     }));
 
   return (
@@ -67,6 +68,14 @@ export function PVTChart({ results }: Props) {
             name="中央値RT"
             stroke="#2ecc71"
             dot={{ r: 4 }}
+          />
+          <Line
+            type="monotone"
+            dataKey="sdRT"
+            name="RT変動性(SD)"
+            stroke="#e67e22"
+            dot={{ r: 4 }}
+            strokeDasharray="4 2"
           />
         </LineChart>
       </ResponsiveContainer>

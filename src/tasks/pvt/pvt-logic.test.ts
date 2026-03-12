@@ -26,6 +26,8 @@ test("computeMetrics with valid trials", () => {
   expect(result.uid.length).toBeGreaterThan(0);
   expect(result.meanRT).toBe(300);
   expect(result.medianRT).toBe(300);
+  // SD = sqrt(((200-300)^2 + (300-300)^2 + (400-300)^2) / 3) ≈ 81.65 → 82
+  expect(result.sdRT).toBe(82);
   expect(result.lapseCount).toBe(0);
   expect(result.falseStartCount).toBe(0);
   expect(result.validTrialCount).toBe(3);
@@ -66,6 +68,7 @@ test("computeMetrics with no trials", () => {
   const result = computeMetrics([], 180000);
   expect(result.meanRT).toBe(0);
   expect(result.medianRT).toBe(0);
+  expect(result.sdRT).toBe(0);
   expect(result.lapseCount).toBe(0);
   expect(result.falseStartCount).toBe(0);
   expect(result.validTrialCount).toBe(0);
