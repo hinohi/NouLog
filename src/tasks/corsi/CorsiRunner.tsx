@@ -74,7 +74,7 @@ export function CorsiRunner({
               className={getBlockClass(i)}
               style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
               onClick={() => tappable && onTap(i)}
-              disabled={!tappable}
+              disabled={!tappable || userInput.includes(i)}
             >
               {tapNum !== null && (
                 <span className="corsi-block-number">{tapNum}</span>

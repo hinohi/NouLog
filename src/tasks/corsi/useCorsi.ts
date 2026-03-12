@@ -163,6 +163,7 @@ export function useCorsi() {
     (index: number) => {
       const s = stateRef.current;
       if (s.phase !== "recalling") return;
+      if (s.userInput.includes(index)) return;
 
       const newInput = [...s.userInput, index];
       setState((prev) => ({ ...prev, userInput: newInput }));
