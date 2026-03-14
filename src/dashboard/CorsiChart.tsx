@@ -45,7 +45,7 @@ export function CorsiChart({ results }: Props) {
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#444" />
           <XAxis dataKey="date" stroke="#aaa" fontSize={12} />
-          <YAxis yAxisId="left" stroke="#aaa" fontSize={12} />
+          <YAxis yAxisId="left" stroke="#aaa" fontSize={12} domain={[0, 9]} />
           <YAxis
             yAxisId="right"
             orientation="right"

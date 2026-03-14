@@ -50,6 +50,7 @@ export function OSPANChart({ results }: Props) {
             stroke="#aaa"
             fontSize={12}
             unit="%"
+            domain={[0, 100]}
           />
           <Tooltip
             contentStyle={{ backgroundColor: "#333", border: "1px solid #555" }}

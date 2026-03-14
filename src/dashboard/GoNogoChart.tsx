@@ -85,6 +85,7 @@ export function GoNogoChart({ results }: Props) {
               stroke="#aaa"
               fontSize={12}
               unit="%"
+              domain={[0, 100]}
             />
             <Tooltip
               contentStyle={{
