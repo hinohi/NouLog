@@ -12,9 +12,18 @@ import type { OSPANResult } from "../db/schema.ts";
 
 interface Props {
   results: OSPANResult[];
+  xDomain?: [number, number];
 }
 
-export function OSPANChart({ results }: Props) {
+const formatDate = (ts: number) =>
+  new Date(ts).toLocaleDateString("ja-JP", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+export function OSPANChart({ results, xDomain }: Props) {
   if (results.length === 0) {
     return <p className="chart-empty">OSPAN の結果がまだありません</p>;
   }
@@ -22,12 +31,7 @@ export function OSPANChart({ results }: Props) {
   const data = results
     .sort((a, b) => a.timestamp - b.timestamp)
     .map((r) => ({
-      date: new Date(r.timestamp).toLocaleDateString("ja-JP", {
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
+      timestamp: r.timestamp,
       absoluteScore: r.absoluteScore,
       partialScore: r.partialScore,
       mathAccuracy: Math.round(r.mathAccuracy * 100),
@@ -42,7 +46,15 @@ export function OSPANChart({ results }: Props) {
           margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-          <XAxis dataKey="date" stroke="#aaa" fontSize={12} />
+          <XAxis
+            dataKey="timestamp"
+            type="number"
+            scale="time"
+            domain={xDomain}
+            tickFormatter={formatDate}
+            stroke="#aaa"
+            fontSize={12}
+          />
           <YAxis yAxisId="score" stroke="#aaa" fontSize={12} />
           <YAxis
             yAxisId="pct"
@@ -53,6 +65,7 @@ export function OSPANChart({ results }: Props) {
             domain={[0, 100]}
           />
           <Tooltip
+            labelFormatter={formatDate}
             contentStyle={{ backgroundColor: "#333", border: "1px solid #555" }}
           />
           <Legend />

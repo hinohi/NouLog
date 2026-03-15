@@ -12,30 +12,31 @@ import type { GoNogoResult } from "../db/schema.ts";
 
 interface Props {
   results: GoNogoResult[];
+  xDomain?: [number, number];
 }
 
-export function GoNogoChart({ results }: Props) {
+const formatDate = (ts: number) =>
+  new Date(ts).toLocaleDateString("ja-JP", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+export function GoNogoChart({ results, xDomain }: Props) {
   if (results.length === 0) {
     return <p className="chart-empty">Go/No-Go の結果がまだありません</p>;
   }
 
   const sorted = [...results].sort((a, b) => a.timestamp - b.timestamp);
 
-  const formatDate = (ts: number) =>
-    new Date(ts).toLocaleDateString("ja-JP", {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-
   const dPrimeData = sorted.map((r) => ({
-    date: formatDate(r.timestamp),
+    timestamp: r.timestamp,
     dPrime: r.dPrime,
   }));
 
   const rtFaData = sorted.map((r) => ({
-    date: formatDate(r.timestamp),
+    timestamp: r.timestamp,
     goMeanRT: r.goMeanRT,
     falseAlarmRate: Math.round(r.falseAlarmRate * 100),
   }));
@@ -50,9 +51,18 @@ export function GoNogoChart({ results }: Props) {
             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-            <XAxis dataKey="date" stroke="#aaa" fontSize={12} />
+            <XAxis
+              dataKey="timestamp"
+              type="number"
+              scale="time"
+              domain={xDomain}
+              tickFormatter={formatDate}
+              stroke="#aaa"
+              fontSize={12}
+            />
             <YAxis stroke="#aaa" fontSize={12} />
             <Tooltip
+              labelFormatter={formatDate}
               contentStyle={{
                 backgroundColor: "#333",
                 border: "1px solid #555",
@@ -77,7 +87,15 @@ export function GoNogoChart({ results }: Props) {
             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-            <XAxis dataKey="date" stroke="#aaa" fontSize={12} />
+            <XAxis
+              dataKey="timestamp"
+              type="number"
+              scale="time"
+              domain={xDomain}
+              tickFormatter={formatDate}
+              stroke="#aaa"
+              fontSize={12}
+            />
             <YAxis yAxisId="left" stroke="#aaa" fontSize={12} unit=" ms" />
             <YAxis
               yAxisId="right"
@@ -88,6 +106,7 @@ export function GoNogoChart({ results }: Props) {
               domain={[0, 100]}
             />
             <Tooltip
+              labelFormatter={formatDate}
               contentStyle={{
                 backgroundColor: "#333",
                 border: "1px solid #555",

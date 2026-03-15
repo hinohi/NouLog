@@ -12,32 +12,33 @@ import type { TaskSwitchResult } from "../db/schema.ts";
 
 interface Props {
   results: TaskSwitchResult[];
+  xDomain?: [number, number];
 }
 
-export function TaskSwitchChart({ results }: Props) {
+const formatDate = (ts: number) =>
+  new Date(ts).toLocaleDateString("ja-JP", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+export function TaskSwitchChart({ results, xDomain }: Props) {
   if (results.length === 0) {
     return <p className="chart-empty">Task Switching の結果がまだありません</p>;
   }
 
   const sorted = [...results].sort((a, b) => a.timestamp - b.timestamp);
 
-  const formatDate = (ts: number) =>
-    new Date(ts).toLocaleDateString("ja-JP", {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-
   const rtData = sorted.map((r) => ({
-    date: formatDate(r.timestamp),
+    timestamp: r.timestamp,
     switchCost: r.switchCost,
     switchMeanRT: r.switchMeanRT,
     repeatMeanRT: r.repeatMeanRT,
   }));
 
   const accData = sorted.map((r) => ({
-    date: formatDate(r.timestamp),
+    timestamp: r.timestamp,
     overall: Math.round(r.overallAccuracy * 100),
     switch: Math.round(r.switchAccuracy * 100),
     repeat: Math.round(r.repeatAccuracy * 100),
@@ -53,9 +54,18 @@ export function TaskSwitchChart({ results }: Props) {
             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-            <XAxis dataKey="date" stroke="#aaa" fontSize={12} />
+            <XAxis
+              dataKey="timestamp"
+              type="number"
+              scale="time"
+              domain={xDomain}
+              tickFormatter={formatDate}
+              stroke="#aaa"
+              fontSize={12}
+            />
             <YAxis stroke="#aaa" fontSize={12} unit=" ms" />
             <Tooltip
+              labelFormatter={formatDate}
               contentStyle={{
                 backgroundColor: "#333",
                 border: "1px solid #555",
@@ -94,9 +104,18 @@ export function TaskSwitchChart({ results }: Props) {
             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-            <XAxis dataKey="date" stroke="#aaa" fontSize={12} />
+            <XAxis
+              dataKey="timestamp"
+              type="number"
+              scale="time"
+              domain={xDomain}
+              tickFormatter={formatDate}
+              stroke="#aaa"
+              fontSize={12}
+            />
             <YAxis stroke="#aaa" fontSize={12} unit="%" domain={[0, 100]} />
             <Tooltip
+              labelFormatter={formatDate}
               contentStyle={{
                 backgroundColor: "#333",
                 border: "1px solid #555",

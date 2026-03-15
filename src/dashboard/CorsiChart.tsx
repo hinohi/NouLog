@@ -12,25 +12,26 @@ import type { CorsiResult } from "../db/schema.ts";
 
 interface Props {
   results: CorsiResult[];
+  xDomain?: [number, number];
 }
 
-export function CorsiChart({ results }: Props) {
+const formatDate = (ts: number) =>
+  new Date(ts).toLocaleDateString("ja-JP", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+export function CorsiChart({ results, xDomain }: Props) {
   if (results.length === 0) {
     return <p className="chart-empty">Corsi Block の結果がまだありません</p>;
   }
 
   const sorted = [...results].sort((a, b) => a.timestamp - b.timestamp);
 
-  const formatDate = (ts: number) =>
-    new Date(ts).toLocaleDateString("ja-JP", {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-
   const data = sorted.map((r) => ({
-    date: formatDate(r.timestamp),
+    timestamp: r.timestamp,
     blockSpan: r.blockSpan,
     totalScore: r.totalScore,
   }));
@@ -44,7 +45,15 @@ export function CorsiChart({ results }: Props) {
           margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-          <XAxis dataKey="date" stroke="#aaa" fontSize={12} />
+          <XAxis
+            dataKey="timestamp"
+            type="number"
+            scale="time"
+            domain={xDomain}
+            tickFormatter={formatDate}
+            stroke="#aaa"
+            fontSize={12}
+          />
           <YAxis yAxisId="left" stroke="#aaa" fontSize={12} domain={[0, 9]} />
           <YAxis
             yAxisId="right"
@@ -53,6 +62,7 @@ export function CorsiChart({ results }: Props) {
             fontSize={12}
           />
           <Tooltip
+            labelFormatter={formatDate}
             contentStyle={{
               backgroundColor: "#333",
               border: "1px solid #555",

@@ -90,6 +90,21 @@ export function DashboardPage() {
     }
   };
 
+  const xDomain = (() => {
+    const allTimestamps = [
+      ...pvtResults.map((r) => r.timestamp),
+      ...ospanResults.map((r) => r.timestamp),
+      ...gonogoResults.map((r) => r.timestamp),
+      ...corsiResults.map((r) => r.timestamp),
+      ...taskswitchResults.map((r) => r.timestamp),
+    ];
+    if (allTimestamps.length === 0) return undefined;
+    return [Math.min(...allTimestamps), Math.max(...allTimestamps)] as [
+      number,
+      number,
+    ];
+  })();
+
   if (loading) {
     return (
       <div className="task-page">
@@ -101,11 +116,11 @@ export function DashboardPage() {
   return (
     <div className="task-page">
       <h1>ダッシュボード</h1>
-      <PVTChart results={pvtResults} />
-      <OSPANChart results={ospanResults} />
-      <GoNogoChart results={gonogoResults} />
-      <CorsiChart results={corsiResults} />
-      <TaskSwitchChart results={taskswitchResults} />
+      <PVTChart results={pvtResults} xDomain={xDomain} />
+      <OSPANChart results={ospanResults} xDomain={xDomain} />
+      <GoNogoChart results={gonogoResults} xDomain={xDomain} />
+      <CorsiChart results={corsiResults} xDomain={xDomain} />
+      <TaskSwitchChart results={taskswitchResults} xDomain={xDomain} />
       <div className="export-section">
         <button
           type="button"
