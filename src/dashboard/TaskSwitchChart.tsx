@@ -51,7 +51,7 @@ export function TaskSwitchChart({ results, xDomain }: Props) {
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
             data={rtData}
-            margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+            margin={{ top: 5, right: 70, left: 10, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#444" />
             <XAxis
@@ -63,7 +63,7 @@ export function TaskSwitchChart({ results, xDomain }: Props) {
               stroke="#aaa"
               fontSize={12}
             />
-            <YAxis stroke="#aaa" fontSize={12} unit=" ms" />
+            <YAxis stroke="#aaa" fontSize={12} unit=" ms" width={65} />
             <Tooltip
               labelFormatter={formatDate}
               contentStyle={{
@@ -101,7 +101,7 @@ export function TaskSwitchChart({ results, xDomain }: Props) {
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
             data={accData}
-            margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+            margin={{ top: 5, right: 70, left: 10, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#444" />
             <XAxis
@@ -113,7 +113,13 @@ export function TaskSwitchChart({ results, xDomain }: Props) {
               stroke="#aaa"
               fontSize={12}
             />
-            <YAxis stroke="#aaa" fontSize={12} unit="%" domain={[0, 100]} />
+            <YAxis
+              stroke="#aaa"
+              fontSize={12}
+              unit="%"
+              domain={[0, 100]}
+              width={65}
+            />
             <Tooltip
               labelFormatter={formatDate}
               contentStyle={{

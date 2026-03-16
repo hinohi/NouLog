@@ -48,7 +48,7 @@ export function GoNogoChart({ results, xDomain }: Props) {
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
             data={dPrimeData}
-            margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+            margin={{ top: 5, right: 70, left: 10, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#444" />
             <XAxis
@@ -60,7 +60,7 @@ export function GoNogoChart({ results, xDomain }: Props) {
               stroke="#aaa"
               fontSize={12}
             />
-            <YAxis stroke="#aaa" fontSize={12} />
+            <YAxis stroke="#aaa" fontSize={12} width={65} />
             <Tooltip
               labelFormatter={formatDate}
               contentStyle={{
@@ -96,7 +96,13 @@ export function GoNogoChart({ results, xDomain }: Props) {
               stroke="#aaa"
               fontSize={12}
             />
-            <YAxis yAxisId="left" stroke="#aaa" fontSize={12} unit=" ms" />
+            <YAxis
+              yAxisId="left"
+              stroke="#aaa"
+              fontSize={12}
+              unit=" ms"
+              width={65}
+            />
             <YAxis
               yAxisId="right"
               orientation="right"
@@ -104,6 +110,7 @@ export function GoNogoChart({ results, xDomain }: Props) {
               fontSize={12}
               unit="%"
               domain={[0, 100]}
+              width={50}
             />
             <Tooltip
               labelFormatter={formatDate}

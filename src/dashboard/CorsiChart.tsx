@@ -54,12 +54,19 @@ export function CorsiChart({ results, xDomain }: Props) {
             stroke="#aaa"
             fontSize={12}
           />
-          <YAxis yAxisId="left" stroke="#aaa" fontSize={12} domain={[0, 9]} />
+          <YAxis
+            yAxisId="left"
+            stroke="#aaa"
+            fontSize={12}
+            domain={[0, 9]}
+            width={65}
+          />
           <YAxis
             yAxisId="right"
             orientation="right"
             stroke="#aaa"
             fontSize={12}
+            width={50}
           />
           <Tooltip
             labelFormatter={formatDate}

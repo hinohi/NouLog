@@ -55,7 +55,7 @@ export function OSPANChart({ results, xDomain }: Props) {
             stroke="#aaa"
             fontSize={12}
           />
-          <YAxis yAxisId="score" stroke="#aaa" fontSize={12} />
+          <YAxis yAxisId="score" stroke="#aaa" fontSize={12} width={65} />
           <YAxis
             yAxisId="pct"
             orientation="right"
@@ -63,6 +63,7 @@ export function OSPANChart({ results, xDomain }: Props) {
             fontSize={12}
             unit="%"
             domain={[0, 100]}
+            width={50}
           />
           <Tooltip
             labelFormatter={formatDate}
