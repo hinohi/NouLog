@@ -13,6 +13,7 @@ import type { CorsiResult } from "../db/schema.ts";
 interface Props {
   results: CorsiResult[];
   xDomain?: [number, number];
+  onPointClick?: (uid: string) => void;
 }
 
 const formatDate = (ts: number) =>
@@ -23,7 +24,7 @@ const formatDate = (ts: number) =>
     minute: "2-digit",
   });
 
-export function CorsiChart({ results, xDomain }: Props) {
+export function CorsiChart({ results, xDomain, onPointClick }: Props) {
   if (results.length === 0) {
     return <p className="chart-empty">Corsi Block の結果がまだありません</p>;
   }
@@ -32,6 +33,7 @@ export function CorsiChart({ results, xDomain }: Props) {
 
   const data = sorted.map((r) => ({
     timestamp: r.timestamp,
+    uid: r.uid,
     blockSpan: r.blockSpan,
     totalScore: r.totalScore,
   }));
@@ -43,6 +45,10 @@ export function CorsiChart({ results, xDomain }: Props) {
         <LineChart
           data={data}
           margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+          onClick={(e) => {
+            const uid = e?.activePayload?.[0]?.payload?.uid;
+            if (uid && onPointClick) onPointClick(uid);
+          }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#444" />
           <XAxis
@@ -82,7 +88,7 @@ export function CorsiChart({ results, xDomain }: Props) {
             dataKey="blockSpan"
             name="Block Span"
             stroke="#e67e22"
-            dot={{ r: 4 }}
+            dot={{ r: 4, cursor: "pointer" }}
           />
           <Line
             yAxisId="right"
@@ -90,7 +96,7 @@ export function CorsiChart({ results, xDomain }: Props) {
             dataKey="totalScore"
             name="Total Score"
             stroke="#1abc9c"
-            dot={{ r: 4 }}
+            dot={{ r: 4, cursor: "pointer" }}
           />
         </LineChart>
       </ResponsiveContainer>

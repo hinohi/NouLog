@@ -14,6 +14,7 @@ import type { PVTResult } from "../db/schema.ts";
 interface Props {
   results: PVTResult[];
   xDomain?: [number, number];
+  onPointClick?: (uid: string) => void;
 }
 
 const formatDate = (ts: number) =>
@@ -24,7 +25,7 @@ const formatDate = (ts: number) =>
     minute: "2-digit",
   });
 
-export function PVTChart({ results, xDomain }: Props) {
+export function PVTChart({ results, xDomain, onPointClick }: Props) {
   if (results.length === 0) {
     return <p className="chart-empty">PVT の結果がまだありません</p>;
   }
@@ -33,6 +34,7 @@ export function PVTChart({ results, xDomain }: Props) {
     .sort((a, b) => a.timestamp - b.timestamp)
     .map((r) => ({
       timestamp: r.timestamp,
+      uid: r.uid,
       meanRT: r.meanRT,
       medianRT: r.medianRT,
       sdRT: r.sdRT,
@@ -45,6 +47,10 @@ export function PVTChart({ results, xDomain }: Props) {
         <LineChart
           data={data}
           margin={{ top: 5, right: 70, left: 10, bottom: 5 }}
+          onClick={(e) => {
+            const uid = e?.activePayload?.[0]?.payload?.uid;
+            if (uid && onPointClick) onPointClick(uid);
+          }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#444" />
           <XAxis
@@ -73,21 +79,21 @@ export function PVTChart({ results, xDomain }: Props) {
             dataKey="meanRT"
             name="平均RT"
             stroke="#3498db"
-            dot={{ r: 4 }}
+            dot={{ r: 4, cursor: "pointer" }}
           />
           <Line
             type="monotone"
             dataKey="medianRT"
             name="中央値RT"
             stroke="#2ecc71"
-            dot={{ r: 4 }}
+            dot={{ r: 4, cursor: "pointer" }}
           />
           <Line
             type="monotone"
             dataKey="sdRT"
             name="RT変動性(SD)"
             stroke="#e67e22"
-            dot={{ r: 4 }}
+            dot={{ r: 4, cursor: "pointer" }}
             strokeDasharray="4 2"
           />
         </LineChart>

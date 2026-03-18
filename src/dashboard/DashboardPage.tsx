@@ -105,6 +105,10 @@ export function DashboardPage() {
     ];
   })();
 
+  const navigateToResult = (taskType: string) => (uid: string) => {
+    window.location.hash = `#/result/${taskType}/${uid}`;
+  };
+
   if (loading) {
     return (
       <div className="task-page">
@@ -116,11 +120,31 @@ export function DashboardPage() {
   return (
     <div className="task-page">
       <h1>ダッシュボード</h1>
-      <PVTChart results={pvtResults} xDomain={xDomain} />
-      <OSPANChart results={ospanResults} xDomain={xDomain} />
-      <GoNogoChart results={gonogoResults} xDomain={xDomain} />
-      <CorsiChart results={corsiResults} xDomain={xDomain} />
-      <TaskSwitchChart results={taskswitchResults} xDomain={xDomain} />
+      <PVTChart
+        results={pvtResults}
+        xDomain={xDomain}
+        onPointClick={navigateToResult("pvt")}
+      />
+      <OSPANChart
+        results={ospanResults}
+        xDomain={xDomain}
+        onPointClick={navigateToResult("ospan")}
+      />
+      <GoNogoChart
+        results={gonogoResults}
+        xDomain={xDomain}
+        onPointClick={navigateToResult("gonogo")}
+      />
+      <CorsiChart
+        results={corsiResults}
+        xDomain={xDomain}
+        onPointClick={navigateToResult("corsi")}
+      />
+      <TaskSwitchChart
+        results={taskswitchResults}
+        xDomain={xDomain}
+        onPointClick={navigateToResult("taskswitch")}
+      />
       <div className="export-section">
         <button
           type="button"

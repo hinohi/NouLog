@@ -1,5 +1,6 @@
 import { Layout } from "./components/Layout.tsx";
 import { DashboardPage } from "./dashboard/DashboardPage.tsx";
+import { ResultDetailPage } from "./dashboard/ResultDetailPage.tsx";
 import { useHashRoute } from "./hooks/useHashRoute.ts";
 import { CorsiPage } from "./tasks/corsi/CorsiPage.tsx";
 import { GoNogoPage } from "./tasks/gonogo/GoNogoPage.tsx";
@@ -73,6 +74,14 @@ export function App() {
   const route = useHashRoute();
 
   let page: React.ReactNode;
+  const resultMatch = route.match(/^\/result\/(\w+)\/(.+)$/);
+  if (resultMatch) {
+    return (
+      <Layout currentRoute={route}>
+        <ResultDetailPage taskType={resultMatch[1]} uid={resultMatch[2]} />
+      </Layout>
+    );
+  }
   switch (route) {
     case "/pvt":
       page = <PVTPage />;

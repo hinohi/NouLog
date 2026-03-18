@@ -13,6 +13,7 @@ import type { OSPANResult } from "../db/schema.ts";
 interface Props {
   results: OSPANResult[];
   xDomain?: [number, number];
+  onPointClick?: (uid: string) => void;
 }
 
 const formatDate = (ts: number) =>
@@ -23,7 +24,7 @@ const formatDate = (ts: number) =>
     minute: "2-digit",
   });
 
-export function OSPANChart({ results, xDomain }: Props) {
+export function OSPANChart({ results, xDomain, onPointClick }: Props) {
   if (results.length === 0) {
     return <p className="chart-empty">OSPAN の結果がまだありません</p>;
   }
@@ -32,6 +33,7 @@ export function OSPANChart({ results, xDomain }: Props) {
     .sort((a, b) => a.timestamp - b.timestamp)
     .map((r) => ({
       timestamp: r.timestamp,
+      uid: r.uid,
       absoluteScore: r.absoluteScore,
       partialScore: r.partialScore,
       mathAccuracy: Math.round(r.mathAccuracy * 100),
@@ -44,6 +46,10 @@ export function OSPANChart({ results, xDomain }: Props) {
         <LineChart
           data={data}
           margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+          onClick={(e) => {
+            const uid = e?.activePayload?.[0]?.payload?.uid;
+            if (uid && onPointClick) onPointClick(uid);
+          }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#444" />
           <XAxis
@@ -76,7 +82,7 @@ export function OSPANChart({ results, xDomain }: Props) {
             dataKey="absoluteScore"
             name="絶対スコア"
             stroke="#3498db"
-            dot={{ r: 4 }}
+            dot={{ r: 4, cursor: "pointer" }}
           />
           <Line
             yAxisId="score"
@@ -84,7 +90,7 @@ export function OSPANChart({ results, xDomain }: Props) {
             dataKey="partialScore"
             name="部分スコア"
             stroke="#2ecc71"
-            dot={{ r: 4 }}
+            dot={{ r: 4, cursor: "pointer" }}
           />
           <Line
             yAxisId="pct"
@@ -92,7 +98,7 @@ export function OSPANChart({ results, xDomain }: Props) {
             dataKey="mathAccuracy"
             name="算数正答率"
             stroke="#e67e22"
-            dot={{ r: 4 }}
+            dot={{ r: 4, cursor: "pointer" }}
           />
         </LineChart>
       </ResponsiveContainer>

@@ -13,6 +13,7 @@ import type { GoNogoResult } from "../db/schema.ts";
 interface Props {
   results: GoNogoResult[];
   xDomain?: [number, number];
+  onPointClick?: (uid: string) => void;
 }
 
 const formatDate = (ts: number) =>
@@ -23,7 +24,7 @@ const formatDate = (ts: number) =>
     minute: "2-digit",
   });
 
-export function GoNogoChart({ results, xDomain }: Props) {
+export function GoNogoChart({ results, xDomain, onPointClick }: Props) {
   if (results.length === 0) {
     return <p className="chart-empty">Go/No-Go の結果がまだありません</p>;
   }
@@ -32,11 +33,13 @@ export function GoNogoChart({ results, xDomain }: Props) {
 
   const dPrimeData = sorted.map((r) => ({
     timestamp: r.timestamp,
+    uid: r.uid,
     dPrime: r.dPrime,
   }));
 
   const rtFaData = sorted.map((r) => ({
     timestamp: r.timestamp,
+    uid: r.uid,
     goMeanRT: r.goMeanRT,
     falseAlarmRate: Math.round(r.falseAlarmRate * 100),
   }));
@@ -49,6 +52,10 @@ export function GoNogoChart({ results, xDomain }: Props) {
           <LineChart
             data={dPrimeData}
             margin={{ top: 5, right: 70, left: 10, bottom: 5 }}
+            onClick={(e) => {
+              const uid = e?.activePayload?.[0]?.payload?.uid;
+              if (uid && onPointClick) onPointClick(uid);
+            }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#444" />
             <XAxis
@@ -74,7 +81,7 @@ export function GoNogoChart({ results, xDomain }: Props) {
               dataKey="dPrime"
               name="d'"
               stroke="#9b59b6"
-              dot={{ r: 4 }}
+              dot={{ r: 4, cursor: "pointer" }}
             />
           </LineChart>
         </ResponsiveContainer>
@@ -85,6 +92,10 @@ export function GoNogoChart({ results, xDomain }: Props) {
           <LineChart
             data={rtFaData}
             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+            onClick={(e) => {
+              const uid = e?.activePayload?.[0]?.payload?.uid;
+              if (uid && onPointClick) onPointClick(uid);
+            }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#444" />
             <XAxis
@@ -126,7 +137,7 @@ export function GoNogoChart({ results, xDomain }: Props) {
               dataKey="goMeanRT"
               name="Go平均RT"
               stroke="#3498db"
-              dot={{ r: 4 }}
+              dot={{ r: 4, cursor: "pointer" }}
             />
             <Line
               yAxisId="right"
@@ -134,7 +145,7 @@ export function GoNogoChart({ results, xDomain }: Props) {
               dataKey="falseAlarmRate"
               name="誤反応率(%)"
               stroke="#e74c3c"
-              dot={{ r: 4 }}
+              dot={{ r: 4, cursor: "pointer" }}
             />
           </LineChart>
         </ResponsiveContainer>

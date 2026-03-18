@@ -70,6 +70,22 @@ export async function put<T>(storeName: string, value: T): Promise<T> {
   });
 }
 
+export async function getByUid<T>(
+  storeName: string,
+  uid: string,
+): Promise<T | undefined> {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(storeName, "readonly");
+    const store = tx.objectStore(storeName);
+    const index = store.index("uid");
+    const request = index.get(uid);
+    request.onsuccess = () => resolve(request.result as T | undefined);
+    request.onerror = () => reject(request.error);
+    tx.oncomplete = () => db.close();
+  });
+}
+
 export async function getAll<T>(storeName: string): Promise<T[]> {
   const db = await openDB();
   return new Promise((resolve, reject) => {
