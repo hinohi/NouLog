@@ -2,10 +2,9 @@ import type { OSPANResult as OSPANResultType } from "../../db/schema.ts";
 
 interface Props {
   result: OSPANResultType;
-  onRetry: () => void;
 }
 
-export function OSPANResult({ result, onRetry }: Props) {
+export function OSPANResult({ result }: Props) {
   return (
     <div className="ospan-result">
       <h2>OSPAN 結果</h2>
@@ -61,9 +60,6 @@ export function OSPANResult({ result, onRetry }: Props) {
         </tbody>
       </table>
       <div className="result-actions">
-        <button type="button" onClick={onRetry} className="btn btn-primary">
-          もう一度
-        </button>
         <a href="#/dashboard" className="btn btn-secondary">
           ダッシュボード
         </a>

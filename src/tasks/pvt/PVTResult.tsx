@@ -2,10 +2,9 @@ import type { PVTResult as PVTResultType } from "../../db/schema.ts";
 
 interface Props {
   result: PVTResultType;
-  onRetry: () => void;
 }
 
-export function PVTResult({ result, onRetry }: Props) {
+export function PVTResult({ result }: Props) {
   return (
     <div className="pvt-result">
       <h2>PVT 結果</h2>
@@ -42,9 +41,6 @@ export function PVTResult({ result, onRetry }: Props) {
         </tbody>
       </table>
       <div className="result-actions">
-        <button type="button" onClick={onRetry} className="btn btn-primary">
-          もう一度
-        </button>
         <a href="#/dashboard" className="btn btn-secondary">
           ダッシュボード
         </a>

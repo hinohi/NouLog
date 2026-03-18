@@ -2,10 +2,9 @@ import type { CorsiResult as CorsiResultType } from "../../db/schema.ts";
 
 interface Props {
   result: CorsiResultType;
-  onRetry: () => void;
 }
 
-export function CorsiResult({ result, onRetry }: Props) {
+export function CorsiResult({ result }: Props) {
   return (
     <div className="corsi-result">
       <h2>Corsi Block 結果</h2>
@@ -32,9 +31,6 @@ export function CorsiResult({ result, onRetry }: Props) {
         </tbody>
       </table>
       <div className="result-actions">
-        <button type="button" onClick={onRetry} className="btn btn-primary">
-          もう一度
-        </button>
         <a href="#/dashboard" className="btn btn-secondary">
           ダッシュボード
         </a>

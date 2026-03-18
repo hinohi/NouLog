@@ -2,10 +2,9 @@ import type { GoNogoResult as GoNogoResultType } from "../../db/schema.ts";
 
 interface Props {
   result: GoNogoResultType;
-  onRetry: () => void;
 }
 
-export function GoNogoResult({ result, onRetry }: Props) {
+export function GoNogoResult({ result }: Props) {
   return (
     <div className="gonogo-result">
       <h2>Go/No-Go 結果</h2>
@@ -42,9 +41,6 @@ export function GoNogoResult({ result, onRetry }: Props) {
         </tbody>
       </table>
       <div className="result-actions">
-        <button type="button" onClick={onRetry} className="btn btn-primary">
-          もう一度
-        </button>
         <a href="#/dashboard" className="btn btn-secondary">
           ダッシュボード
         </a>

@@ -57,7 +57,7 @@ export function PVTPage() {
   if (pvt.phase === "done" && pvt.result) {
     return (
       <div className="task-page">
-        <PVTResult result={pvt.result} onRetry={pvt.start} />
+        <PVTResult result={pvt.result} />
       </div>
     );
   }

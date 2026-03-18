@@ -66,7 +66,7 @@ export function TaskSwitchPage() {
   if (ts.phase === "done" && ts.result) {
     return (
       <div className="task-page">
-        <TaskSwitchResult result={ts.result} onRetry={ts.start} />
+        <TaskSwitchResult result={ts.result} />
       </div>
     );
   }

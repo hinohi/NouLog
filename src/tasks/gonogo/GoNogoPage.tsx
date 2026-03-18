@@ -53,7 +53,7 @@ export function GoNogoPage() {
   if (gonogo.phase === "done" && gonogo.result) {
     return (
       <div className="task-page">
-        <GoNogoResult result={gonogo.result} onRetry={gonogo.start} />
+        <GoNogoResult result={gonogo.result} />
       </div>
     );
   }

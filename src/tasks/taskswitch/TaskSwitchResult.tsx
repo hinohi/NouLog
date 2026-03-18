@@ -2,10 +2,9 @@ import type { TaskSwitchResult as TaskSwitchResultType } from "../../db/schema.t
 
 interface Props {
   result: TaskSwitchResultType;
-  onRetry: () => void;
 }
 
-export function TaskSwitchResult({ result, onRetry }: Props) {
+export function TaskSwitchResult({ result }: Props) {
   return (
     <div className="taskswitch-result">
       <h2>Task Switching 結果</h2>
@@ -50,9 +49,6 @@ export function TaskSwitchResult({ result, onRetry }: Props) {
         </tbody>
       </table>
       <div className="result-actions">
-        <button type="button" onClick={onRetry} className="btn btn-primary">
-          もう一度
-        </button>
         <a href="#/dashboard" className="btn btn-secondary">
           ダッシュボード
         </a>

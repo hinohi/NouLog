@@ -56,7 +56,7 @@ export function OSPANPage() {
   if (ospan.phase === "done" && ospan.result) {
     return (
       <div className="task-page">
-        <OSPANResult result={ospan.result} onRetry={ospan.start} />
+        <OSPANResult result={ospan.result} />
       </div>
     );
   }

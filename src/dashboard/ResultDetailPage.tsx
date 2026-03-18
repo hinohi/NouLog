@@ -84,33 +84,17 @@ export function ResultDetailPage({ taskType, uid }: Props) {
     );
   }
 
-  const onRetry = () => {
-    const task = TASK_TYPES[taskType];
-    if (task) window.location.hash = task.route;
-  };
-
   switch (taskType) {
     case "pvt":
-      return <PVTResultView result={result as PVTResult} onRetry={onRetry} />;
+      return <PVTResultView result={result as PVTResult} />;
     case "ospan":
-      return (
-        <OSPANResultView result={result as OSPANResult} onRetry={onRetry} />
-      );
+      return <OSPANResultView result={result as OSPANResult} />;
     case "gonogo":
-      return (
-        <GoNogoResultView result={result as GoNogoResult} onRetry={onRetry} />
-      );
+      return <GoNogoResultView result={result as GoNogoResult} />;
     case "corsi":
-      return (
-        <CorsiResultView result={result as CorsiResult} onRetry={onRetry} />
-      );
+      return <CorsiResultView result={result as CorsiResult} />;
     case "taskswitch":
-      return (
-        <TaskSwitchResultView
-          result={result as TaskSwitchResult}
-          onRetry={onRetry}
-        />
-      );
+      return <TaskSwitchResultView result={result as TaskSwitchResult} />;
     default:
       return null;
   }

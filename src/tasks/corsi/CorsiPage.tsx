@@ -55,7 +55,7 @@ export function CorsiPage() {
   if (corsi.phase === "done" && corsi.result) {
     return (
       <div className="task-page">
-        <CorsiResult result={corsi.result} onRetry={corsi.start} />
+        <CorsiResult result={corsi.result} />
       </div>
     );
   }
