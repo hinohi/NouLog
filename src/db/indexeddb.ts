@@ -1,5 +1,5 @@
 const DB_NAME = "NouLogDB";
-const DB_VERSION = 5;
+const DB_VERSION = 6;
 
 const STORE_NAMES = [
   "pvtResults",
@@ -12,9 +12,8 @@ const STORE_NAMES = [
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
-    request.onupgradeneeded = (event) => {
+    request.onupgradeneeded = () => {
       const db = request.result;
-      const oldVersion = event.oldVersion;
 
       // v0→v1/v2/v3: create stores
       for (const name of STORE_NAMES) {
@@ -26,10 +25,13 @@ function openDB(): Promise<IDBDatabase> {
         }
       }
 
-      // v3→v4: add uid unique index + backfill existing records
-      if (oldVersion < 4) {
+      // v3→v4+: add uid unique index + backfill existing records
+      // Always check all stores (not just oldVersion < 4) so that
+      // stores added in later versions also get the uid index.
+      {
         const tx = request.transaction!;
         for (const name of STORE_NAMES) {
+          if (!db.objectStoreNames.contains(name)) continue;
           const store = tx.objectStore(name);
           if (!store.indexNames.contains("uid")) {
             store.createIndex("uid", "uid", { unique: true });
