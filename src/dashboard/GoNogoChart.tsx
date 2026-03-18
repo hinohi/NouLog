@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -25,6 +26,7 @@ const formatDate = (ts: number) =>
   });
 
 export function GoNogoChart({ results, xDomain, onPointClick }: Props) {
+  const [showInfo, setShowInfo] = useState(false);
   if (results.length === 0) {
     return <p className="chart-empty">Go/No-Go の結果がまだありません</p>;
   }
@@ -57,7 +59,17 @@ export function GoNogoChart({ results, xDomain, onPointClick }: Props) {
   return (
     <>
       <div className="chart-container">
-        <h3>Go/No-Go d&apos;（感度指標）推移</h3>
+        <h3>
+          Go/No-Go d&apos;（感度指標）推移
+          <button
+            type="button"
+            className="info-icon"
+            onClick={() => setShowInfo(true)}
+            aria-label="d'の説明を表示"
+          >
+            &#9432;
+          </button>
+        </h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
             data={dPrimeData}
@@ -155,6 +167,41 @@ export function GoNogoChart({ results, xDomain, onPointClick }: Props) {
           </LineChart>
         </ResponsiveContainer>
       </div>
+      {showInfo && (
+        <div
+          className="modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setShowInfo(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setShowInfo(false);
+          }}
+        >
+          {/* biome-ignore lint/a11y/noStaticElementInteractions: overlay click-away防止 */}
+          <div
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
+          >
+            <h3>d&apos;（ディープライム）とは</h3>
+            <p>
+              信号検出理論に基づく感度指標で、「Go刺激への正反応率」と「No-Go刺激への誤反応率」から算出されます。
+            </p>
+            <p>値が高いほど、GoとNo-Goを正確に区別できていることを示します。</p>
+            <p className="info-scale">
+              <strong>目安：</strong>1.0未満 = 低感度 / 1.0〜2.0 = 中程度 /
+              2.0以上 = 高感度
+            </p>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setShowInfo(false)}
+            >
+              閉じる
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
