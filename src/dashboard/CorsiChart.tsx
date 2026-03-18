@@ -38,6 +38,16 @@ export function CorsiChart({ results, xDomain, onPointClick }: Props) {
     totalScore: r.totalScore,
   }));
 
+  // biome-ignore lint/suspicious/noExplicitAny: Recharts activeDot onClick typing
+  const handleDotClick = (_e: any, data: any) => {
+    const uid = data?.payload?.uid;
+    if (uid && onPointClick) onPointClick(uid);
+  };
+
+  const activeDot = onPointClick
+    ? { r: 6, cursor: "pointer", onClick: handleDotClick }
+    : { r: 6 };
+
   return (
     <div className="chart-container">
       <h3>Corsi Block Span・Total Score 推移</h3>
@@ -45,10 +55,6 @@ export function CorsiChart({ results, xDomain, onPointClick }: Props) {
         <LineChart
           data={data}
           margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-          onClick={(e) => {
-            const uid = e?.activePayload?.[0]?.payload?.uid;
-            if (uid && onPointClick) onPointClick(uid);
-          }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#444" />
           <XAxis
@@ -89,6 +95,7 @@ export function CorsiChart({ results, xDomain, onPointClick }: Props) {
             name="Block Span"
             stroke="#e67e22"
             dot={{ r: 4, cursor: "pointer" }}
+            activeDot={activeDot}
           />
           <Line
             yAxisId="right"
@@ -97,6 +104,7 @@ export function CorsiChart({ results, xDomain, onPointClick }: Props) {
             name="Total Score"
             stroke="#1abc9c"
             dot={{ r: 4, cursor: "pointer" }}
+            activeDot={activeDot}
           />
         </LineChart>
       </ResponsiveContainer>

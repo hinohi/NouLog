@@ -39,6 +39,16 @@ export function OSPANChart({ results, xDomain, onPointClick }: Props) {
       mathAccuracy: Math.round(r.mathAccuracy * 100),
     }));
 
+  // biome-ignore lint/suspicious/noExplicitAny: Recharts activeDot onClick typing
+  const handleDotClick = (_e: any, data: any) => {
+    const uid = data?.payload?.uid;
+    if (uid && onPointClick) onPointClick(uid);
+  };
+
+  const activeDot = onPointClick
+    ? { r: 6, cursor: "pointer", onClick: handleDotClick }
+    : { r: 6 };
+
   return (
     <div className="chart-container">
       <h3>OSPAN スコア推移</h3>
@@ -46,10 +56,6 @@ export function OSPANChart({ results, xDomain, onPointClick }: Props) {
         <LineChart
           data={data}
           margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-          onClick={(e) => {
-            const uid = e?.activePayload?.[0]?.payload?.uid;
-            if (uid && onPointClick) onPointClick(uid);
-          }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#444" />
           <XAxis
@@ -83,6 +89,7 @@ export function OSPANChart({ results, xDomain, onPointClick }: Props) {
             name="絶対スコア"
             stroke="#3498db"
             dot={{ r: 4, cursor: "pointer" }}
+            activeDot={activeDot}
           />
           <Line
             yAxisId="score"
@@ -91,6 +98,7 @@ export function OSPANChart({ results, xDomain, onPointClick }: Props) {
             name="部分スコア"
             stroke="#2ecc71"
             dot={{ r: 4, cursor: "pointer" }}
+            activeDot={activeDot}
           />
           <Line
             yAxisId="pct"
@@ -99,6 +107,7 @@ export function OSPANChart({ results, xDomain, onPointClick }: Props) {
             name="算数正答率"
             stroke="#e67e22"
             dot={{ r: 4, cursor: "pointer" }}
+            activeDot={activeDot}
           />
         </LineChart>
       </ResponsiveContainer>

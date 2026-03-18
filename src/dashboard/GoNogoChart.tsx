@@ -44,6 +44,16 @@ export function GoNogoChart({ results, xDomain, onPointClick }: Props) {
     falseAlarmRate: Math.round(r.falseAlarmRate * 100),
   }));
 
+  // biome-ignore lint/suspicious/noExplicitAny: Recharts activeDot onClick typing
+  const handleDotClick = (_e: any, data: any) => {
+    const uid = data?.payload?.uid;
+    if (uid && onPointClick) onPointClick(uid);
+  };
+
+  const activeDot = onPointClick
+    ? { r: 6, cursor: "pointer", onClick: handleDotClick }
+    : { r: 6 };
+
   return (
     <>
       <div className="chart-container">
@@ -52,10 +62,6 @@ export function GoNogoChart({ results, xDomain, onPointClick }: Props) {
           <LineChart
             data={dPrimeData}
             margin={{ top: 5, right: 70, left: 10, bottom: 5 }}
-            onClick={(e) => {
-              const uid = e?.activePayload?.[0]?.payload?.uid;
-              if (uid && onPointClick) onPointClick(uid);
-            }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#444" />
             <XAxis
@@ -82,6 +88,7 @@ export function GoNogoChart({ results, xDomain, onPointClick }: Props) {
               name="d'"
               stroke="#9b59b6"
               dot={{ r: 4, cursor: "pointer" }}
+              activeDot={activeDot}
             />
           </LineChart>
         </ResponsiveContainer>
@@ -92,10 +99,6 @@ export function GoNogoChart({ results, xDomain, onPointClick }: Props) {
           <LineChart
             data={rtFaData}
             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-            onClick={(e) => {
-              const uid = e?.activePayload?.[0]?.payload?.uid;
-              if (uid && onPointClick) onPointClick(uid);
-            }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#444" />
             <XAxis
@@ -138,6 +141,7 @@ export function GoNogoChart({ results, xDomain, onPointClick }: Props) {
               name="Go平均RT"
               stroke="#3498db"
               dot={{ r: 4, cursor: "pointer" }}
+              activeDot={activeDot}
             />
             <Line
               yAxisId="right"
@@ -146,6 +150,7 @@ export function GoNogoChart({ results, xDomain, onPointClick }: Props) {
               name="誤反応率(%)"
               stroke="#e74c3c"
               dot={{ r: 4, cursor: "pointer" }}
+              activeDot={activeDot}
             />
           </LineChart>
         </ResponsiveContainer>

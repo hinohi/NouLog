@@ -40,6 +40,16 @@ export function PVTChart({ results, xDomain, onPointClick }: Props) {
       sdRT: r.sdRT,
     }));
 
+  // biome-ignore lint/suspicious/noExplicitAny: Recharts activeDot onClick typing
+  const handleDotClick = (_e: any, data: any) => {
+    const uid = data?.payload?.uid;
+    if (uid && onPointClick) onPointClick(uid);
+  };
+
+  const activeDot = onPointClick
+    ? { r: 6, cursor: "pointer", onClick: handleDotClick }
+    : { r: 6 };
+
   return (
     <div className="chart-container">
       <h3>PVT 反応時間推移</h3>
@@ -47,10 +57,6 @@ export function PVTChart({ results, xDomain, onPointClick }: Props) {
         <LineChart
           data={data}
           margin={{ top: 5, right: 70, left: 10, bottom: 5 }}
-          onClick={(e) => {
-            const uid = e?.activePayload?.[0]?.payload?.uid;
-            if (uid && onPointClick) onPointClick(uid);
-          }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#444" />
           <XAxis
@@ -80,6 +86,7 @@ export function PVTChart({ results, xDomain, onPointClick }: Props) {
             name="平均RT"
             stroke="#3498db"
             dot={{ r: 4, cursor: "pointer" }}
+            activeDot={activeDot}
           />
           <Line
             type="monotone"
@@ -87,6 +94,7 @@ export function PVTChart({ results, xDomain, onPointClick }: Props) {
             name="中央値RT"
             stroke="#2ecc71"
             dot={{ r: 4, cursor: "pointer" }}
+            activeDot={activeDot}
           />
           <Line
             type="monotone"
@@ -94,6 +102,7 @@ export function PVTChart({ results, xDomain, onPointClick }: Props) {
             name="RT変動性(SD)"
             stroke="#e67e22"
             dot={{ r: 4, cursor: "pointer" }}
+            activeDot={activeDot}
             strokeDasharray="4 2"
           />
         </LineChart>
